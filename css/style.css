@@ -1,6 +1,47 @@
-#map {
-    height: 500px;
-    width: 100%;
-	display: inline-block;
-	float: center;
+/* Stylesheet by Anna E. George, 2019 */
+
+/* defines map height, width, and display type*/
+#mapid { height: 700px;
+				 width: 100%;
+				 display: inline-block;
+}
+
+/* Sets style for sequence control container*/
+.sequence-control-container {
+    width: 350px;
+    height: 30px;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    line-height: 45px;
+    text-align: center;
+    border: solid gray 1px;
+}
+
+/* Sets style for legend control container*/
+.legend-control-container {
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    line-height: 45px;
+    text-align: left;
+    border: solid gray 1px;
+}
+
+/* Sets style for title container*/
+.title-control-container {
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    line-height: 25px;
+    text-align: center;
+    border: solid gray 1px;
+}
+
+/* sets style for range slider, forward, and back button*/
+.range-slider {
+    width: 70%;
+}
+#forward {
+    float: right;
+}
+#reverse {
+    float: left;
 }
