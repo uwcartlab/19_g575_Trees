@@ -2,8 +2,18 @@
 
 /* defines map height, width, and display type*/
 #mapid { height: 700px;
-				 width: 100%;
+				 width: 80%;
 				 display: inline-block;
+}
+
+#panel {
+	height: 700px;
+	width: 20%;
+	display: inline-block;
+	float: left;
+	color: white;
+	background-color: green;
+	text-align: center;
 }
 
 /* Sets style for sequence control container*/
