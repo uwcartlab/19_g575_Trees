@@ -14,10 +14,51 @@ function createMap(){
     }).addTo(map);
     //call getData function
     getData(map);
+	//call navPanel function
+	//navPanel();
+	createOverlay(map);
 };
 
 //Puts map on webpage
 $(document).ready(createMap);
+
+/* function changeTaxa (){
+	var LayerActions = {
+		reset: function(){
+			sunlayer.setSQL("SELECT * FROM pollendata");
+		},
+		spruce: function(){
+			sublayer.setSQL("SELECT * from pollendata WHERE ????? ilike 'spruce'");
+			return true;
+		},
+}; */
+
+function createOverlay(map){
+	var iceSheets = new L.LayerGroup();
+	//Define markers to overlay/popup content
+
+	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+		bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
+	
+	var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		osmAttrib = '&copy; ' + osmLink + ' Contributors',
+		bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+		bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
+
+	var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+		bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
+
+	var baseLayers = {
+		"OSM Mapnik": osmMap,
+		"Greyscale": bwMap
+	};
+	
+	var overlays = {
+		"Ice Sheets": iceSheets
+	};
+	
+	L.control.layers(baseLayers,overlays).addTo(map);
+};
 
 // Function to create popups
 function createPopup(properties, attribute, layer, radius){
