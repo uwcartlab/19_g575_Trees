@@ -28,10 +28,12 @@ function callback(data){
 	pollen = data[0];
 	ice = data[1];
 	console.log(ice);
+	
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	var icelayer = L.geoJSON(ice).addTo(map);
 	createOverlay(map, icelayer)
+	
 	
 	var attributes = processData(response);
 	createPropSymbols(response, map, attributes);
@@ -61,11 +63,7 @@ function createOverlay(map, getIce){
 	//Define overlay/popup content
 	//***Add code here***
 	console.log(getIce);
-	//var iceSheets = L.geoJSON(getIce).addTo(overlays);
-	
-	L.marker([65.72899627685547, -66.58399963378906]).addTo(iceSheets),
-    L.marker([65.86000061035156, -66.62100219726562]).addTo(iceSheets),
-	L.marker([65.94599914550781, -66.64299774169922]).addTo(iceSheets);
+	//var icelayer = L.geoJSON(ice).addTo(iceSheets);
 	
 	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
 		bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
