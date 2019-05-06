@@ -1,9 +1,9 @@
 /* Stylesheet by Anna E. George, 2019 */
-
+var map;
 //function to initiate Leaflet map
 function createMap(){
     //creates map & set center/zoom
-    var map = L.map('mapid', {
+    map = L.map('mapid', {
         center: [50, -80],
         zoom: 3.8
     });
@@ -28,11 +28,34 @@ function createHeatMap()
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
+	
+	promises = [];
+	promises.push($.getJSON("data/pollendata.geojson"));
+	promises.push($.getJSON("data/icesheets.geojson"));
+	Promise.all(promises).then(callback);
     //call getData function
     getData(map);
 	//call navPanel function
 	//navPanel();
-	createOverlay(map);
+	createOverlay(map, getIce);
+};
+
+function callback(data){
+	pollen = data[0];
+	ice = data[1];
+	console.log(ice);
+	
+	//Move callbacks from AJAX HERE!
+	//to avoid asynchronous problems?
+	var icelayer = L.geoJSON(ice).addTo(map);
+	createOverlay(map, icelayer)
+	
+	
+	var attributes = processData(response);
+	createPropSymbols(response, map, attributes);
+	createSequenceControls(map, attributes);
+	createLegend(map,attributes);
+	updateLegend(map, attributes[0]);
 };
 
 //Puts map on webpage
@@ -41,18 +64,23 @@ $(document).ready(createMap);
 /* function changeTaxa (){
 	var LayerActions = {
 		reset: function(){
-			sunlayer.setSQL("SELECT * FROM pollendata");
+			sublayer.setSQL("SELECT * FROM pollendata");
 		},
 		spruce: function(){
-			sublayer.setSQL("SELECT * from pollendata WHERE ????? ilike 'spruce'");
+			sublayer.setSQL("SELECT * from pollendata WHERE ????? ilike 'picea'");
 			return true;
 		},
 }; */
 
-function createOverlay(map){
-	var iceSheets = new L.LayerGroup();
-	//Define markers to overlay/popup content
+function createOverlay(map, getIce){
+	//var iceSheets = new L.LayerGroup();
+	//var iceSheets = new L.geoJSON();
 
+	//Define overlay/popup content
+	//***Add code here***
+	console.log(getIce);
+	//var icelayer = L.geoJSON(ice).addTo(iceSheets);
+	
 	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
 		bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
 	
@@ -107,6 +135,7 @@ function calcPropRadius(attribute) {
 function pointToLayer(feature, latlng, attributes){
     //Assign the current attribute based on the first index of the attributes array
     let attribute = attributes[0];
+	
     //create marker options
     var options = {
         fillColor: "#228B22",
@@ -234,6 +263,23 @@ function updatePropSymbols(map, attribute){
     });
 };
 
+/* // Function to process ice sheet data
+function processIce(getIce){
+	//create empty array
+	var iceAttributes = [];
+	
+	//properties of first attribute
+	var iceProperties = getIce.features[0].properties;
+	//push attributes to array
+	for (var attribute in iceProperties){
+		if (attribute.indexOf("Age") > 4000){
+			iceAttributes.push(attribute);
+		};
+	};
+	//return as object
+	return iceAttributes;
+}; */
+
 // Function to create an array of the sequential attributes
 function processData(data){
     //empty array to hold attributes
@@ -360,6 +406,18 @@ function updateLegend(map, attribute){
       // add legend text
       $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + "%");
 };
+};
+function getIce(map){
+	//load icesheet data
+	$.ajax("data/icesheets.geojson", {
+		dataType: "json",
+		success: function(response){
+			//create array
+			var iceAttributes = getIce(response);
+			//call function
+			createOverlay(map, getIce);
+		}
+	});
 };
 
 // Import GeoJSON data
