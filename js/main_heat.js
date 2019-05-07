@@ -7,13 +7,13 @@ function createMap(){
         center: [50, -80],
         zoom: 3.8
     });
-    
-    
+
+
     //add OSM base tilelayer w/attribution
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
-	
+
 	promises = [];
 	promises.push($.getJSON("data/pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
@@ -28,14 +28,13 @@ function createMap(){
 function callback(data){
 	pollen = data[0];
 	ice = data[1];
-	console.log(ice);
-	
+
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 //	var icelayer = L.geoJSON(ice).addTo(map);
 //	createOverlay(map, icelayer)
-	
-	
+
+
 //	var attributes = processData(response);
 //	createPropSymbols(response, map, attributes);
 //	createSequenceControls(map, attributes);
@@ -53,19 +52,17 @@ $(document).ready(createMap);
 
 
 function createHeatMap(pollen){
-    $.getJSON(pollen,function(data){
-     console.log(pollen)
-        
-    var locations = data.features.map(function(row) {
+
+    var locations = pollen.features.map(function(row) {
       // the heatmap plugin wants an array of each location
       var location = row.geometry.coordinates.reverse();
-      location.push(0.5);
+      location.push(0.9);
       return location; // e.g. [50.5, 30.5, 0.2], // lat, lng, intensity
     });
 
-    var heat = L.heatLayer(locations, { radius: 35 });
+    var heat = L.heatLayer(locations, { radius: 100 }, {0.4: 'blue', 0.65: 'lime', 1: 'red'});
     map.addLayer(heat);
-  })
+//  })
 };
 
 
@@ -95,10 +92,10 @@ function createHeatMap(pollen){
 //	//***Add code here***
 //	console.log(getIce);
 //	//var icelayer = L.geoJSON(ice).addTo(iceSheets);
-//	
+//
 //	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
 //		bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
-//	
+//
 //	var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 //		osmAttrib = '&copy; ' + osmLink + ' Contributors',
 //		bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
@@ -111,11 +108,11 @@ function createHeatMap(pollen){
 //		"OSM Mapnik": osmMap,
 //		"Greyscale": bwMap
 //	};
-//	
+//
 //	var overlays = {
 //		"Ice Sheets": iceSheets
 //	};
-//	
+//
 //	L.control.layers(baseLayers,overlays).addTo(map);
 //};
 //
@@ -150,7 +147,7 @@ function createHeatMap(pollen){
 //function pointToLayer(feature, latlng, attributes){
 //    //Assign the current attribute based on the first index of the attributes array
 //    let attribute = attributes[0];
-//	
+//
 //    //create marker options
 //    var options = {
 //        fillColor: "#228B22",
@@ -190,8 +187,8 @@ function createHeatMap(pollen){
 //GOAL: Allow the user to sequence through the attributes and resymbolize the map
 //   according to each attribute
 //1. Create slider widget
-// Create new sequence controls function
-//function createSequenceControls(map, attributes){
+// // Create new sequence controls function
+// function createSequenceControls(map, attributes){
 //  // sets SequenceControl variable
 //  var SequenceControl = L.Control.extend({
 //      options: {
@@ -256,8 +253,29 @@ function createHeatMap(pollen){
 //      updatePropSymbols(map, attributes[index]);
 //  });
 //
-//};
+// };
+// //
 //
+// // Resize proportional symbols according to new attribute values
+// function updateHeatMap(map, attribute){
+//    map.eachLayer(function(layer){
+//        // If the feature exists
+//        if (layer.feature){
+//            //update the layer style and popup
+//            //access feature properties
+//            var props = layer.feature.properties;
+//
+//            //update each feature's radius based on new attribute values
+//            var radius = calcPropRadius(props[attribute]);
+//            layer.setRadius(radius);
+//
+//            // Calls popup and update legend functions
+//            createPopup(props, attribute, layer, radius);
+//            updateLegend(map, attribute);
+//        };
+//    });
+// };
+
 //// Resize proportional symbols according to new attribute values
 //function updatePropSymbols(map, attribute){
 //    map.eachLayer(function(layer){
@@ -282,7 +300,7 @@ function createHeatMap(pollen){
 function processIce(getIce){
 	//create empty array
 	var iceAttributes = [];
-	
+
 	//properties of first attribute
 	var iceProperties = getIce.features[0].properties;
 	//push attributes to array
