@@ -60,9 +60,17 @@ function createHeatMap(pollen){
       return location; // e.g. [50.5, 30.5, 0.2], // lat, lng, intensity
     });
 
-    var heat = L.heatLayer(locations, { radius: 100 }, {0.4: 'blue', 0.65: 'lime', 1: 'red'});
-    map.addLayer(heat);
-//  })
+    var heat = L.heatLayer(locations, { 
+            radius: 20,
+            blur: 10, 
+            maxZoom: 17,
+            max:100    
+         },
+            { gradient:{0: 'blue', 65: 'lime', 80: 'red'}
+             
+         }
+  ); map.addLayer(heat);
+
 };
 
 
