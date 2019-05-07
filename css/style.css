@@ -16,6 +16,11 @@
 	text-align: center;
 }
 
+.iceLayer {
+	opacity: 50%;
+	color: white;
+}
+
 /* Sets style for sequence control container*/
 .sequence-control-container {
     width: 350px;

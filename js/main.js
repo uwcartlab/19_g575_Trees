@@ -33,6 +33,17 @@ function createMap(){
 	promises = [];
 	promises.push($.getJSON("data/pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
+	promises.push($.getJSON("data/ice5000.geojson")); //ice test
+	promises.push($.getJSON("data/ice6000.geojson"));
+	promises.push($.getJSON("data/ice7000.geojson"));
+	promises.push($.getJSON("data/ice8000.geojson"));
+	promises.push($.getJSON("data/ice9000.geojson"));
+	promises.push($.getJSON("data/ice10000.geojson"));
+	promises.push($.getJSON("data/ice10250.geojson"));
+	promises.push($.getJSON("data/ice11000.geojson"));
+	promises.push($.getJSON("data/ice12750.geojson"));
+	promises.push($.getJSON("data/ice13500.geojson"));
+	promises.push($.getJSON("data/ice14000.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
     getData(map);
@@ -44,7 +55,18 @@ function createMap(){
 function callback(data){
 	pollen = data[0];
 	ice = data[1];
-	console.log(ice);
+	ice5k = data[2]; //ice test
+	ice6k = data[3];
+	ice7k = data[4];
+	ice8k = data[5];
+	ice9k = data[6];
+	ice10k = data[7];
+	ice10250 = data[8];
+	ice11k = data[9];
+	ice12750 = data[10];
+	ice13500 = data[11];
+	ice14k = data[12];
+	console.log(ice5k);
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
@@ -75,6 +97,17 @@ function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
 	var iceLayer = L.geoJSON(ice).addTo(map);
+	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
+	var yr6000 = L.geoJSON(ice6k).addTo(map);
+	var yr7000 = L.geoJSON(ice7k).addTo(map);
+	var yr8000 = L.geoJSON(ice8k).addTo(map);
+	var yr9000 = L.geoJSON(ice9k).addTo(map);
+	var yr10000 = L.geoJSON(ice10k).addTo(map);
+	var yr10250 = L.geoJSON(ice10250).addTo(map);
+	var yr11000 = L.geoJSON(ice11k).addTo(map);
+	var yr12750 = L.geoJSON(ice12750).addTo(map);
+	var yr13500 = L.geoJSON(ice13500).addTo(map);
+	var yr14000 = L.geoJSON(ice14k).addTo(map);
 	console.log(ice.features[0]);
 	
 	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -94,7 +127,18 @@ function createOverlay(map, getData){ //getIce){
 	};
 	
 	var overlays = {
-		"Ice Sheets": iceLayer
+		"Ice Sheets": iceLayer, 
+		"5000": yr5000, //ice test
+		"6000": yr6000,
+		"7000": yr7000,
+		"8000": yr8000,
+		"9000": yr9000,
+		"10000": yr10000,
+		"10250": yr10250,
+		"11000": yr11000,
+		"12750": yr12750,
+		"13500": yr13500,
+		"14000": yr14000
 	};
 	
 	L.control.layers(baseLayers,overlays).addTo(map);
@@ -238,6 +282,13 @@ function createSequenceControls(map, attributes){
   });
 
 };
+
+/* function updateOverlay (map, createOverlay){
+	map.eachLayer(function(layer){
+		if (layer.feature){
+			var iceProps = layer.feature.properties;
+			var age = 
+}; */
 
 // Resize proportional symbols according to new attribute values
 function updatePropSymbols(map, attribute){
