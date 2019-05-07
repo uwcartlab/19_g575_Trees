@@ -7,7 +7,8 @@ function createMap(){
         center: [50, -80],
         zoom: 3.8
     });
-function createHeatMap()
+	
+/* function createHeatMap()
        
     
     $.getJSON("rodents.geojson",function(data){
@@ -20,7 +21,7 @@ function createHeatMap()
 
     var heat = L.heatLayer(locations, { radius: 35 });
     map.addLayer(heat);
-  });
+  }); */
     
     
     
@@ -37,19 +38,17 @@ function createHeatMap()
     getData(map);
 	//call navPanel function
 	//navPanel();
-	createOverlay(map, getIce);
+	createOverlay(map, getData);
 };
 
 function callback(data){
 	pollen = data[0];
 	ice = data[1];
 	console.log(ice);
-	
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
-	var icelayer = L.geoJSON(ice).addTo(map);
-	createOverlay(map, icelayer)
-	
+	//var icelayer = L.geoJSON(ice).addTo(map);
+	createOverlay(map, getData)//iceLayer)
 	
 	var attributes = processData(response);
 	createPropSymbols(response, map, attributes);
@@ -72,14 +71,11 @@ $(document).ready(createMap);
 		},
 }; */
 
-function createOverlay(map, getIce){
-	//var iceSheets = new L.LayerGroup();
-	//var iceSheets = new L.geoJSON();
+function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
-	//***Add code here***
-	console.log(getIce);
-	//var icelayer = L.geoJSON(ice).addTo(iceSheets);
+	var iceLayer = L.geoJSON(ice).addTo(map);
+	console.log(ice.features[0]);
 	
 	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
 		bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
@@ -98,7 +94,7 @@ function createOverlay(map, getIce){
 	};
 	
 	var overlays = {
-		"Ice Sheets": iceSheets
+		"Ice Sheets": iceLayer
 	};
 	
 	L.control.layers(baseLayers,overlays).addTo(map);
