@@ -35,7 +35,7 @@ function createMap(){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/pollendata.geojson"));
+	promises.push($.getJSON("data/final_pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	promises.push($.getJSON("data/ice5000.geojson")); //ice test
 	promises.push($.getJSON("data/ice6000.geojson"));
@@ -58,6 +58,7 @@ function createMap(){
 
 function callback(data){
 	pollen = data[0];
+	//console.log(pollen.features[0].properties["Taxon"]);
 	ice = data[1];
 	ice5k = data[2]; //ice test
 	ice6k = data[3];
@@ -70,7 +71,7 @@ function callback(data){
 	ice12750 = data[10];
 	ice13500 = data[11];
 	ice14k = data[12];
-	console.log(ice5k);
+
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
@@ -86,16 +87,38 @@ function callback(data){
 //Puts map on webpage
 $(document).ready(createMap);
 
+/* var dropdownLayers = {};
+dropdownLayers["All Data"] =
+	{ name: "All Data",
+	  layer: L.geoJson(),
+}; */
 /* function changeTaxa (){
-	var LayerActions = {
+	var allTaxa = L.geoJson(pollen);
+			var spruce = L.geoJson(data, {
+		filter: function(feature, layer) {
+			return feature.properties.Taxa == "picea";
+		},
+
 		reset: function(){
-			sublayer.setSQL("SELECT * FROM pollendata");
+			sublayer.setSQL("SELECT * FROM pollen");
 		},
 		spruce: function(){
-			sublayer.setSQL("SELECT * from pollendata WHERE ????? ilike 'picea'");
+			sublayer.setSQL("SELECT * from pollen WHERE taxon ilike 'picea'");
 			return true;
 		},
+		oak: function(){
+			sublayer.setSQL("SELECT * from pollen WHERE taxon like 'quercus'");
+		},
+	$(.selector).on('click', function() {
+		$(this).addClass('active').siblings.().removeClass('active');
+
 }; */
+
+/* L.geoJson(response, {
+	filter: function(feature, layer) {
+		return feature.properties.["Taxon"] == "picea";
+	}
+}).addTo(map); */
 
 function createOverlay(map, getData){ //getIce){
 
@@ -256,11 +279,11 @@ function createSequenceControls(map, attributes){
         if ($(this).attr('id') == 'forward'){
             index++;
             //Step 7: if past the last attribute, wrap around to first attribute
-            index = index > 29 ? 0 : index;
+            index = index > 41 ? 0 : index;
         } else if ($(this).attr('id') == 'reverse'){
             index--;
             //Step 7: if past the first attribute, wrap around to last attribute
-            index = index < 0 ? 29 : index;
+            index = index < 0 ? 41 : index;
         };
 
       //update slider
@@ -467,7 +490,7 @@ function getIce(map){
 // Import GeoJSON data
 function getData(map){
     //load the data
-    $.ajax("data/pollendata.geojson", {
+    $.ajax("data/final_pollendata.geojson", { //changed to FINAL_POLLENDATA
         dataType: "json",
         success: function(response){
 
