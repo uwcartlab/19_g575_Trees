@@ -5,12 +5,14 @@ function createMap(){
     //creates map & set center/zoom
     map = L.map('mapid', {
         center: [50, -80],
-        zoom: 3.8
+        zoom: 3.8,
+        maxZoom: 7,
+        minZoom: 2.3
     });
-	
+
 /* function createHeatMap()
-       
-    
+
+
     $.getJSON("rodents.geojson",function(data){
     var locations = data.features.map(function(rat) {
       // the heatmap plugin wants an array of each location
@@ -22,14 +24,16 @@ function createMap(){
     var heat = L.heatLayer(locations, { radius: 35 });
     map.addLayer(heat);
   }); */
-    
-    
-    
-    //add OSM base tilelayer w/attribution
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+
+
+
+    //add OSM/Carto base tilelayer w/attribution
+    var CartoDB_Positron = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    	subdomains: 'abcd',
+    	maxZoom: 19
     }).addTo(map);
-	
+
 	promises = [];
 	promises.push($.getJSON("data/pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
@@ -48,7 +52,7 @@ function createMap(){
     //call getData function
     getData(map);
 	//call navPanel function
-	//navPanel();
+//navPanel();
 	createOverlay(map, getData);
 };
 
@@ -71,7 +75,7 @@ function callback(data){
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
 	createOverlay(map, getData)//iceLayer)
-	
+
 	var attributes = processData(response);
 	createPropSymbols(response, map, attributes);
 	createSequenceControls(map, attributes);
@@ -109,25 +113,25 @@ function createOverlay(map, getData){ //getIce){
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
 	var yr14000 = L.geoJSON(ice14k).addTo(map);
 	console.log(ice.features[0]);
-	
-	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
-		bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
-	
-	var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-		osmAttrib = '&copy; ' + osmLink + ' Contributors',
-		bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
-		bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
 
-	var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
-		bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
+	// var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+	// 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
+  //
+	// var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+	// 	osmAttrib = '&copy; ' + osmLink + ' Contributors',
+	// 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+	// 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
+  //
+	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
-	var baseLayers = {
-		"OSM Mapnik": osmMap,
-		"Greyscale": bwMap
-	};
-	
+	// var baseLayers = {
+	// 	"OSM Mapnik": osmMap,
+	// 	"Greyscale": bwMap
+	// };
+
 	var overlays = {
-		"Ice Sheets": iceLayer, 
+		"Ice Sheets": iceLayer,
 		"5000": yr5000, //ice test
 		"6000": yr6000,
 		"7000": yr7000,
@@ -140,8 +144,8 @@ function createOverlay(map, getData){ //getIce){
 		"13500": yr13500,
 		"14000": yr14000
 	};
-	
-	L.control.layers(baseLayers,overlays).addTo(map);
+
+	L.control.layers(/*baseLayers,*/overlays).addTo(map);
 };
 
 // Function to create popups
@@ -175,7 +179,7 @@ function calcPropRadius(attribute) {
 function pointToLayer(feature, latlng, attributes){
     //Assign the current attribute based on the first index of the attributes array
     let attribute = attributes[0];
-	
+
     //create marker options
     var options = {
         fillColor: "#228B22",
@@ -218,27 +222,20 @@ function createPropSymbols(data, map, attributes){
 // Create new sequence controls function
 function createSequenceControls(map, attributes){
   // sets SequenceControl variable
-  var SequenceControl = L.Control.extend({
-      options: {
-          position: 'bottomleft' //control panel position
-      },
-      onAdd: function (map) {
-                  // create the control container div with a particular class name
-                  var container = L.DomUtil.create('div', 'sequence-control-container');
-                  //create range input element (slider)
-                  $(container).append('<input class="range-slider" type="range">');
+  // var SequenceControl = L.Control.extend({
+      // options: {
+      //     position: 'bottomleft' //control panel position
+      // },
+      // onAdd: function (map) {
+                  // // create the control container div with a particular class name
+                  // var container = L.DomUtil.create('div', 'sequence-control-container');
+  //create range input element (slider)
+  $('#panel').append('<input class="range-slider" type="range">');
 
-                  // Create skip buttons
-                  $(container).append('<button class="skip" id="reverse">Reverse</button>');
-                  $(container).append('<button class="skip" id="forward">Skip</button>');
+  // Create skip buttons
+  $('#panel').append('<button class="skip" id="reverse">Reverse</button>');
+  $('#panel').append('<button class="skip" id="forward">Skip</button>');
 
-                  //disable any mouse event listeners for the container
-                  L.DomEvent.disableClickPropagation(container);
-                  return container;
-              }
-          });
-  // Adds control to map
-  map.addControl(new SequenceControl());
   //set slider attributes
   $('.range-slider').attr({
       max: 29,
@@ -287,7 +284,7 @@ function createSequenceControls(map, attributes){
 	map.eachLayer(function(layer){
 		if (layer.feature){
 			var iceProps = layer.feature.properties;
-			var age = 
+			var age =
 }; */
 
 // Resize proportional symbols according to new attribute values
@@ -314,7 +311,7 @@ function updatePropSymbols(map, attribute){
 function processIce(getIce){
 	//create empty array
 	var iceAttributes = [];
-	
+
 	//properties of first attribute
 	var iceProperties = getIce.features[0].properties;
 	//push attributes to array

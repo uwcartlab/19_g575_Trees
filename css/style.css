@@ -2,34 +2,13 @@
 
 /* defines map height, width, and display type*/
 #mapid { height: 700px;
-				 width: 80%;
+				 width: 69%;
 				 display: inline-block;
-}
-
-#panel {
-	height: 700px;
-	width: 20%;
-	display: inline-block;
-	float: left;
-	color: white;
-	background-color: green;
-	text-align: center;
 }
 
 .iceLayer {
 	opacity: 50%;
 	color: white;
-}
-
-/* Sets style for sequence control container*/
-.sequence-control-container {
-    width: 350px;
-    height: 30px;
-    background-color: rgba(255,255,255,0.8);
-    padding: 10px;
-    line-height: 45px;
-    text-align: center;
-    border: solid gray 1px;
 }
 
 /* Sets style for legend control container*/
@@ -52,11 +31,37 @@
 
 /* sets style for range slider, forward, and back button*/
 .range-slider {
-    width: 70%;
+    width: 50%;
 }
 #forward {
     float: right;
+		padding: 3px;
+		offset: 5px;
 }
 #reverse {
     float: left;
+}
+
+#panel {
+	height: 700px;
+	width: 27%;
+	display: inline-block;
+	float: left;
+	color: black;
+	background-color: #E5FFE5;
+	text-align: center;
+	border:  solid black 1px;
+	padding: 5px;
+}
+
+/* Sets style for sequence control container*/
+.sequence-control-container {
+    width: 100px;
+    height: 30px;
+		display: inline-block;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    line-height: 45px;
+    text-align: center;
+    border: solid gray 1px;
 }
