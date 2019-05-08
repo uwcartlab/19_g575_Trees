@@ -48,6 +48,14 @@ function createMap(){
 	promises.push($.getJSON("data/ice12750.geojson"));
 	promises.push($.getJSON("data/ice13500.geojson"));
 	promises.push($.getJSON("data/ice14000.geojson"));
+	promises.push($.getJSON("data/alnus.geojson"));
+	promises.push($.getJSON("data/ambrosia.geojson"));
+	promises.push($.getJSON("data/fagus.geojson"));
+	promises.push($.getJSON("data/picea.geojson"));
+	promises.push($.getJSON("data/pinus.geojson"));
+	promises.push($.getJSON("data/poaceae.geojson"));
+	promises.push($.getJSON("data/quercus.geojson"));
+	promises.push($.getJSON("data/tsuga.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
     getData(map);
@@ -71,7 +79,16 @@ function callback(data){
 	ice12750 = data[10];
 	ice13500 = data[11];
 	ice14k = data[12];
-
+	
+	//TAXA Data
+	alnus = data[13];
+	ambrosia = data[14];
+	fagus = data[15];
+	picea = data[16];
+	pinus = data[17];
+	poaceae = data[18];
+	quercus = data[19];
+	tsuga = data[20];
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
