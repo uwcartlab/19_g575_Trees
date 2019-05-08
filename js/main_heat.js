@@ -81,14 +81,14 @@ function createHeatMap(pollen){
        } 
    });
       
+  //legemd
+    
+
     
     map.addLayer(heat);
 
 };
 
-
-
-  
 
 
 
