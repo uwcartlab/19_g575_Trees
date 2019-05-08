@@ -53,6 +53,8 @@ $(document).ready(createMap);
 
 function createHeatMap(pollen){
 
+//    var taxa = pollen.features.map
+    
     var locations = pollen.features.map(function(row) {
       // the heatmap plugin wants an array of each location
       var location = row.geometry.coordinates.reverse();
@@ -60,15 +62,33 @@ function createHeatMap(pollen){
       return location; // e.g. [50.5, 30.5, 0.2], // lat, lng, intensity
     });
 
-    var heat = L.heatLayer(locations, { radius: 100 }, {0.4: 'blue', 0.65: 'lime', 1: 'red'});
+    
+      var heat = L.heatLayer(locations, { 
+       minOpacity: 0.3,
+       radius: 20,
+        blur:10,
+        maxZoom:5,
+        max:50,
+       gradient: {
+           0.1: 'purple',
+           0.2: 'cyan',
+           0.3: '#2b83ba',
+           0.4: 'green',
+           0.6: 'yellow',
+           0.8: 'orange',
+           0.9: '#d7191c',
+           1: 'red'
+       } 
+   });
+      
+    
     map.addLayer(heat);
-//  })
+
 };
 
 
 
-
-
+  
 
 
 
