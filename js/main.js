@@ -7,23 +7,6 @@ function createMap(){
         center: [50, -80],
         zoom: 3.8
     });
-	
-/* function createHeatMap()
-       
-    
-    $.getJSON("rodents.geojson",function(data){
-    var locations = data.features.map(function(rat) {
-      // the heatmap plugin wants an array of each location
-      var location = rat.geometry.coordinates.reverse();
-      location.push(0.5);
-      return location; // e.g. [50.5, 30.5, 0.2], // lat, lng, intensity
-    });
-
-    var heat = L.heatLayer(locations, { radius: 35 });
-    map.addLayer(heat);
-  }); */
-    
-    
     
     //add OSM base tilelayer w/attribution
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -31,7 +14,7 @@ function createMap(){
     }).addTo(map);
 	
 	promises = [];
-	promises.push($.getJSON("data/pollendata.geojson"));
+	promises.push($.getJSON("data/final_pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	promises.push($.getJSON("data/ice5000.geojson")); //ice test
 	promises.push($.getJSON("data/ice6000.geojson"));
@@ -54,6 +37,7 @@ function createMap(){
 
 function callback(data){
 	pollen = data[0];
+	//console.log(pollen.features[0].properties["Taxon"]);
 	ice = data[1];
 	ice5k = data[2]; //ice test
 	ice6k = data[3];
@@ -66,7 +50,7 @@ function callback(data){
 	ice12750 = data[10];
 	ice13500 = data[11];
 	ice14k = data[12];
-	console.log(ice5k);
+	
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
@@ -82,16 +66,38 @@ function callback(data){
 //Puts map on webpage
 $(document).ready(createMap);
 
+/* var dropdownLayers = {};
+dropdownLayers["All Data"] = 
+	{ name: "All Data",
+	  layer: L.geoJson(),
+}; */
 /* function changeTaxa (){
-	var LayerActions = {
+	var allTaxa = L.geoJson(pollen);
+			var spruce = L.geoJson(data, {
+		filter: function(feature, layer) {
+			return feature.properties.Taxa == "picea";
+		},
+		
 		reset: function(){
-			sublayer.setSQL("SELECT * FROM pollendata");
+			sublayer.setSQL("SELECT * FROM pollen");
 		},
 		spruce: function(){
-			sublayer.setSQL("SELECT * from pollendata WHERE ????? ilike 'picea'");
+			sublayer.setSQL("SELECT * from pollen WHERE taxon ilike 'picea'");
 			return true;
 		},
+		oak: function(){
+			sublayer.setSQL("SELECT * from pollen WHERE taxon like 'quercus'");
+		},
+	$(.selector).on('click', function() {
+		$(this).addClass('active').siblings.().removeClass('active');
+		
 }; */
+
+/* L.geoJson(response, {
+	filter: function(feature, layer) {
+		return feature.properties.["Taxon"] == "picea";
+	}
+}).addTo(map); */
 
 function createOverlay(map, getData){ //getIce){
 
@@ -108,7 +114,6 @@ function createOverlay(map, getData){ //getIce){
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
 	var yr14000 = L.geoJSON(ice14k).addTo(map);
-	console.log(ice.features[0]);
 	
 	var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
 		bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
@@ -259,11 +264,11 @@ function createSequenceControls(map, attributes){
         if ($(this).attr('id') == 'forward'){
             index++;
             //Step 7: if past the last attribute, wrap around to first attribute
-            index = index > 29 ? 0 : index;
+            index = index > 41 ? 0 : index;
         } else if ($(this).attr('id') == 'reverse'){
             index--;
             //Step 7: if past the first attribute, wrap around to last attribute
-            index = index < 0 ? 29 : index;
+            index = index < 0 ? 41 : index;
         };
 
       //update slider
@@ -282,13 +287,6 @@ function createSequenceControls(map, attributes){
   });
 
 };
-
-/* function updateOverlay (map, createOverlay){
-	map.eachLayer(function(layer){
-		if (layer.feature){
-			var iceProps = layer.feature.properties;
-			var age = 
-}; */
 
 // Resize proportional symbols according to new attribute values
 function updatePropSymbols(map, attribute){
@@ -470,7 +468,7 @@ function getIce(map){
 // Import GeoJSON data
 function getData(map){
     //load the data
-    $.ajax("data/pollendata.geojson", {
+    $.ajax("data/final_pollendata.geojson", { //changed to FINAL_POLLENDATA
         dataType: "json",
         success: function(response){
 
