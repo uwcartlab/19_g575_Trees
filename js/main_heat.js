@@ -50,19 +50,16 @@ $(document).ready(createMap);
 
 
 
-
+//creat heat map
 function createHeatMap(pollen){
-
-//    var taxa = pollen.features.map
     
     var locations = pollen.features.map(function(row) {
       // the heatmap plugin wants an array of each location
       var location = row.geometry.coordinates.reverse();
       location.push(0.9);
-      return location; // e.g. [50.5, 30.5, 0.2], // lat, lng, intensity
+      return location; // [50.5, 30.5, 0.2], [lat, lng, intensity]
     });
 
-    
       var heat = L.heatLayer(locations, { 
        minOpacity: 0.3,
        radius: 20,
@@ -80,15 +77,34 @@ function createHeatMap(pollen){
            1: 'red'
        } 
    });
-      
-    
+         
     map.addLayer(heat);
 
 };
 
 
+//legend function??
 
-  
+
+
+// update heat to new attribute values using updatePropSymbol???
+function updateHeatMap(map, attribute){
+    map.eachLayer(function(layer){
+        // If the feature exists
+        if (layer.feature){
+            //access feature properties
+            var props = layer.feature.properties;
+
+            //update each feature's radius based on new attribute values
+            var radius = calcPropRadius(props[attribute]);
+            layer.setRadius(radius);
+
+            // update legend functions
+//            updateLegend(map, attribute);
+        };
+    });
+};
+
 
 
 
