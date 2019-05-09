@@ -70,3 +70,7 @@
 	position: absolute;
 	bottom: 0;
 }
+#footer {
+	color: black;
+	text-align: center;
+}
