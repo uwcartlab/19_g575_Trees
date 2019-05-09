@@ -11,21 +11,6 @@ function createMap(){
         minZoom: 2.3
     });
 
-/* function createHeatMap()
-
-
-    $.getJSON("rodents.geojson",function(data){
-    var locations = data.features.map(function(rat) {
-      // the heatmap plugin wants an array of each location
-      var location = rat.geometry.coordinates.reverse();
-      location.push(0.5);
-      return location; // e.g. [50.5, 30.5, 0.2], // lat, lng, intensity
-    });
-
-    var heat = L.heatLayer(locations, { radius: 35 });
-    map.addLayer(heat);
-  }); */
-
 
 
     //add OSM/Carto base tilelayer w/attribution
