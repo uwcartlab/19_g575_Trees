@@ -1,6 +1,5 @@
 /* Stylesheet by Anna E. George, 2019 */
 var map;
-
 //function to initiate Leaflet map
 function createMap(){
     //creates map & set center/zoom
@@ -62,8 +61,8 @@ function createMap(){
     getData(map);
 	//call navPanel function
 //navPanel();
-	createOverlay(map, getData);
-};
+	//createOverlay(map, getData);
+
 
 function callback(data){
 	pollen = data[0];
@@ -90,37 +89,84 @@ function callback(data){
 	poaceae = data[18];
 	quercus = data[19];
 	tsuga = data[20];
-
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
 	//createOverlay(map, getData)//iceLayer)
-	//changeExpression(src)
-	//loadScript(src)
+
+  var baseLayers = {
+      "Tree and Grass Taxa",
+      layers: {
+          name: "Birch",
+          layer: fagus,
+          name: "Pine",
+          layer: pinus
+      }
+    };
+  var overlays = {
+       group: "Glacial Extent",
+       layers: [
+         {
+           name: "All extents",
+           layer: new L.GeoJSON(data[1])
+         }
+        ]
+      };
+
+var panelLayers = L.control.PanelLayers(baseLayers, overlays);
+
+map.addControl(panelLayers);
+};
+
 
 	var attributes = processData(response);
-	var taxa_prop = createPropSymbols(response, map, attributes);
+	createPropSymbols(response, map, attributes);
 	createSequenceControls(map, attributes);
 	createLegend(map,attributes);
 	updateLegend(map, attributes[0]);
-  console.log(taxa_prop)
-
-  // createLayerControl(response, map, attributes);
+  createPanel(response, map, attributes);
 };
 
 //Puts map on webpage
 $(document).ready(createMap);
 
-function createLayerControl(response, map, attributes){
-  var groupedOverlays = {
-    "Tree and Plant Taxa": {
-      "Spruce": picea,
-      "Pine": pinus
-    },
-    "Glacial Extent": ice
+function createPanel(response, map, attributes){
 
-  }
-L.control.groupedLayers(groupedOverlays).addTo(map);
+
+function createOverlay(map, getData){ //getIce){
+
+	//Define overlay/popup content
+	var iceLayer = L.geoJSON(ice).addTo(map);
+	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
+	var yr6000 = L.geoJSON(ice6k).addTo(map);
+	var yr7000 = L.geoJSON(ice7k).addTo(map);
+	var yr8000 = L.geoJSON(ice8k).addTo(map);
+	var yr9000 = L.geoJSON(ice9k).addTo(map);
+	var yr10000 = L.geoJSON(ice10k).addTo(map);
+	var yr10250 = L.geoJSON(ice10250).addTo(map);
+	var yr11000 = L.geoJSON(ice11k).addTo(map);
+	var yr12750 = L.geoJSON(ice12750).addTo(map);
+	var yr13500 = L.geoJSON(ice13500).addTo(map);
+	var yr14000 = L.geoJSON(ice14k).addTo(map);
+	console.log(ice.features[0]);
+
+	var overlays = {
+		"Ice Sheets": iceLayer,
+		"5000": yr5000, //ice test
+		"6000": yr6000,
+		"7000": yr7000,
+		"8000": yr8000,
+		"9000": yr9000,
+		"10000": yr10000,
+		"10250": yr10250,
+		"11000": yr11000,
+		"12750": yr12750,
+		"13500": yr13500,
+		"14000": yr14000
+	};
+
+	L.control.layers(baseLayers,overlays).addTo(map);
+};
 };
 /* var dropdownLayers = {};
 dropdownLayers["All Data"] =
@@ -155,57 +201,7 @@ dropdownLayers["All Data"] =
 	}
 }).addTo(map); */
 
-function createOverlay(map, getData, data, map, attributes){ //getIce){
 
-	//Define overlay/popup content
-	var iceLayer = L.geoJSON(ice).addTo(map);
-	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
-	var yr6000 = L.geoJSON(ice6k).addTo(map);
-	var yr7000 = L.geoJSON(ice7k).addTo(map);
-	var yr8000 = L.geoJSON(ice8k).addTo(map);
-	var yr9000 = L.geoJSON(ice9k).addTo(map);
-	var yr10000 = L.geoJSON(ice10k).addTo(map);
-	var yr10250 = L.geoJSON(ice10250).addTo(map);
-	var yr11000 = L.geoJSON(ice11k).addTo(map);
-	var yr12750 = L.geoJSON(ice12750).addTo(map);
-	var yr13500 = L.geoJSON(ice13500).addTo(map);
-	var yr14000 = L.geoJSON(ice14k).addTo(map);
-	console.log(ice.features[0]);
-
-	// var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
-	// 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
-  //
-	// var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	// 	osmAttrib = '&copy; ' + osmLink + ' Contributors',
-	// 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
-	// 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
-  //
-	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
-	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
-
-	// var baseLayers = {
-	// 	"OSM Mapnik": osmMap,
-	// 	"Greyscale": bwMap
-	// };
-//
-	var overlays = {
-		"Ice Sheets": iceLayer,
-		"5000": yr5000, //ice test
-		"6000": yr6000,
-		"7000": yr7000,
-		"8000": yr8000,
-		"9000": yr9000,
-		"10000": yr10000,
-		"10250": yr10250,
-		"11000": yr11000,
-		"12750": yr12750,
-		"13500": yr13500,
-		"14000": yr14000,
-    "Taxon": createPropSymbols(data, map, attributes)
-	};
-
-	L.control.layers(overlays,null,{collapsed:false}).addTo(map);
-};
 
 // Function to create popups
 function createPopup(properties, attribute, layer, radius){
@@ -289,11 +285,11 @@ function createSequenceControls(map, attributes){
                   // // create the control container div with a particular class name
                   // var container = L.DomUtil.create('div', 'sequence-control-container');
   //create range input element (slider)
-  $('#sequence-control-container').append('<input class="range-slider" type="range">');
+  $('#panel').append('<input class="range-slider" type="range">');
 
   // Create skip buttons
-  $('#sequence-control-container').append('<button class="skip" id="reverse">Reverse</button>');
-  $('#sequence-control-container').append('<button class="skip" id="forward">Skip</button>');
+  $('#panel').append('<button class="skip" id="reverse">Reverse</button>');
+  $('#panel').append('<button class="skip" id="forward">Skip</button>');
 
   //set slider attributes
   $('.range-slider').attr({
@@ -510,28 +506,6 @@ function updateLegend(map, attribute){
       $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + "%");
 };
 };
-
-/* function changeExpression(src){
-    var heat = document.createElement("script");
-		heat.src = "js/main_heat.js";
-		document.body.appendChild(heat);
-	var prop = document.createElement("script");
-		prop.src = "js/main.js";
-		document.body.appendChild(prop);
-
-	if (src === "heat"){
-		loadScript("js/main_heat.js");
-	} else if (src === "prop"){
-		loadScript("js/main.js");
-	}
-};
-
-function loadScript(src){
-	var el = document.createElement("script");
-	el.src = src;
-	document.body.appendChild(el);
-} */
-
 function getIce(map){
 	//load icesheet data
 	$.ajax("data/icesheets.geojson", {
@@ -540,7 +514,7 @@ function getIce(map){
 			//create array
 			var iceAttributes = getIce(response);
 			//call function
-			// createOverlay(map, getIce);
+			createOverlay(map, getIce);
 		}
 	});
 };
