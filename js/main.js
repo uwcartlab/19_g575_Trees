@@ -496,7 +496,7 @@ function updateLegend(map, attribute){
 };
 };
 
-function changeExpression(src){
+/* function changeExpression(src){
     var heat = document.createElement("script");
 		heat.src = "js/main_heat.js";
 		document.body.appendChild(heat);
@@ -515,7 +515,7 @@ function loadScript(src){
 	var el = document.createElement("script");
 	el.src = src;
 	document.body.appendChild(el);
-}
+} */
 
 function getIce(map){
 	//load icesheet data
