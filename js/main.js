@@ -1,5 +1,6 @@
 /* Stylesheet by Anna E. George, 2019 */
 var map;
+
 //function to initiate Leaflet map
 function createMap(){
     //creates map & set center/zoom
@@ -89,10 +90,13 @@ function callback(data){
 	poaceae = data[18];
 	quercus = data[19];
 	tsuga = data[20];
+	
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
 	createOverlay(map, getData)//iceLayer)
+	//changeExpression(src)
+	//loadScript(src)
 
 	var attributes = processData(response);
 	createPropSymbols(response, map, attributes);
@@ -270,11 +274,11 @@ function createSequenceControls(map, attributes){
                   // // create the control container div with a particular class name
                   // var container = L.DomUtil.create('div', 'sequence-control-container');
   //create range input element (slider)
-  $('#panel').append('<input class="range-slider" type="range">');
+  $('#sequence-control-container').append('<input class="range-slider" type="range">');
 
   // Create skip buttons
-  $('#panel').append('<button class="skip" id="reverse">Reverse</button>');
-  $('#panel').append('<button class="skip" id="forward">Skip</button>');
+  $('#sequence-control-container').append('<button class="skip" id="reverse">Reverse</button>');
+  $('#sequence-control-container').append('<button class="skip" id="forward">Skip</button>');
 
   //set slider attributes
   $('.range-slider').attr({
@@ -491,6 +495,28 @@ function updateLegend(map, attribute){
       $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + "%");
 };
 };
+
+function changeExpression(src){
+    var heat = document.createElement("script");
+		heat.src = "js/main_heat.js";
+		document.body.appendChild(heat);
+	var prop = document.createElement("script");
+		prop.src = "js/main.js";
+		document.body.appendChild(prop);
+	
+	if (src === "heat"){
+		loadScript("js/main_heat.js");
+	} else if (src === "prop"){
+		loadScript("js/main.js");
+	}
+};
+
+function loadScript(src){
+	var el = document.createElement("script");
+	el.src = src;
+	document.body.appendChild(el);
+}
+
 function getIce(map){
 	//load icesheet data
 	$.ajax("data/icesheets.geojson", {

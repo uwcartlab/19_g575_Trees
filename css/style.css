@@ -65,3 +65,8 @@
     text-align: center;
     border: solid gray 1px;
 }
+
+.expression {
+	position: absolute;
+	bottom: 0;
+}
