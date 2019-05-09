@@ -274,15 +274,19 @@ function createSequenceControls(map, attributes){
                   // // create the control container div with a particular class name
                   // var container = L.DomUtil.create('div', 'sequence-control-container');
   //create range input element (slider)
-  $('#sequence-control-container').append('<input class="range-slider" type="range">');
+  //$('#sequence-control-container').append('<input class="range-slider" type="range">');
+
+  $('#panel').append('<input class="range-slider" type="range">');
 
   // Create skip buttons
-  $('#sequence-control-container').append('<button class="skip" id="reverse">Reverse</button>');
-  $('#sequence-control-container').append('<button class="skip" id="forward">Skip</button>');
+  //$('#sequence-control-container').append('<button class="skip" id="reverse">Reverse</button>');
+  //$('#sequence-control-container').append('<button class="skip" id="forward">Skip</button>');
+  $('#panel').append('<button class="skip" id="reverse">Reverse</button>');
+  $('#panel').append('<button class="skip" id="forward">Skip</button>');
 
   //set slider attributes
   $('.range-slider').attr({
-      max: 29,
+      max: 41,
       min: 0,
       value: 0,
       step: 1
@@ -533,7 +537,7 @@ function getIce(map){
 // Import GeoJSON data
 function getData(map){
     //load the data
-    $.ajax("data/final_pollendata.geojson", { //changed to FINAL_POLLENDATA
+    $.ajax("data/pollendata.geojson", { //changed to FINAL_POLLENDATA
         dataType: "json",
         success: function(response){
 
