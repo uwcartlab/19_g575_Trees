@@ -1,7 +1,7 @@
 /* Stylesheet by Anna E. George, 2019 */
 
 /* defines map height, width, and display type*/
-#mapid { height: 700px;
+#mapid { height: 712px;
 				 width: 69%;
 				 display: inline-block;
 }
@@ -31,7 +31,7 @@
 
 /* sets style for range slider, forward, and back button*/
 .range-slider {
-    width: 50%;
+    width: 75%;
 }
 #forward {
     float: right;
@@ -56,14 +56,16 @@
 
 /* Sets style for sequence control container*/
 .sequence-control-container {
-    width: 100px;
+    width: 400px;
     height: 30px;
-		display: inline-block;
+	display: inline-block;
     background-color: rgba(255,255,255,0.8);
     padding: 10px;
     line-height: 45px;
     text-align: center;
     border: solid gray 1px;
+	position: absolute;
+	box-shadow: 5px 8px 8px #888888;
 }
 
 .expression {

@@ -264,7 +264,7 @@ function createPropSymbols(data, map, attributes){
 //   according to each attribute
 //1. Create slider widget
 // Create new sequence controls function
-function createSequenceControls(map, attributes){
+/* function createSequenceControls(map, attributes){
   // sets SequenceControl variable
   // var SequenceControl = L.Control.extend({
       // options: {
@@ -325,14 +325,68 @@ function createSequenceControls(map, attributes){
       updatePropSymbols(map, attributes[index]);
   });
 
-};
-
-/* function updateOverlay (map, createOverlay){
-	map.eachLayer(function(layer){
-		if (layer.feature){
-			var iceProps = layer.feature.properties;
-			var age =
 }; */
+function createSequenceControls(map, attributes){
+	var SequenceControl = L.Control.extend({
+		options: {
+			position: 'bottomleft'
+		},
+		
+		onAdd: function (map) {
+			var container = L.DomUtil.create('div', 'sequence-control-container');
+			
+			$(container).append('<input class="range-slider" type="range">');
+			$(container).append('<button class="skip" id="reverse" title="Reverse">Reverse</button>');
+			$(container).append('<button class="skip" id="forward" title="Forward">Skip</button>');
+
+			
+			L.DomEvent.disableClickPropagation(container);
+			return container;
+		}
+	});
+	map.addControl(new SequenceControl());
+		  //set slider attributes
+	  $('.range-slider').attr({
+		  max: 41,
+		  min: 0,
+		  value: 0,
+		  step: 1
+		});
+		// Adds forward/backward button images
+		$('#reverse').html('<img src="img/back.png">');
+		$('#forward').html('<img src="img/next.png">');
+
+		//Creates click listener for buttons
+		$('.skip').click(function(){
+			//get the old index value
+			var index = $('.range-slider').val();
+
+			//Step 6: increment or decrement depending on button clicked
+			if ($(this).attr('id') == 'forward'){
+				index++;
+				//Step 7: if past the last attribute, wrap around to first attribute
+				index = index > 41 ? 0 : index;
+			} else if ($(this).attr('id') == 'reverse'){
+				index--;
+				//Step 7: if past the first attribute, wrap around to last attribute
+				index = index < 0 ? 41 : index;
+			};
+
+		  //update slider
+		  $('.range-slider').val(index);
+
+		  //pass new attribute to update symbols
+		  updatePropSymbols(map, attributes[index]);
+		});
+
+	  //input listener for slider
+	  $('.range-slider').on('input', function(){
+		  //get the new index value
+		  var index = $(this).val();
+		  //pass new attribute to update symbols
+		  updatePropSymbols(map, attributes[index]);
+	  });
+};
 
 // Resize proportional symbols according to new attribute values
 function updatePropSymbols(map, attribute){
@@ -353,23 +407,6 @@ function updatePropSymbols(map, attribute){
         };
     });
 };
-
-/* // Function to process ice sheet data
-function processIce(getIce){
-	//create empty array
-	var iceAttributes = [];
-
-	//properties of first attribute
-	var iceProperties = getIce.features[0].properties;
-	//push attributes to array
-	for (var attribute in iceProperties){
-		if (attribute.indexOf("Age") > 4000){
-			iceAttributes.push(attribute);
-		};
-	};
-	//return as object
-	return iceAttributes;
-}; */
 
 // Function to create an array of the sequential attributes
 function processData(data){
@@ -496,29 +533,8 @@ function updateLegend(map, attribute){
 
       // add legend text
       $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + "%");
+	};
 };
-};
-
-/* function changeExpression(src){
-    var heat = document.createElement("script");
-		heat.src = "js/main_heat.js";
-		document.body.appendChild(heat);
-	var prop = document.createElement("script");
-		prop.src = "js/main.js";
-		document.body.appendChild(prop);
-	
-	if (src === "heat"){
-		loadScript("js/main_heat.js");
-	} else if (src === "prop"){
-		loadScript("js/main.js");
-	}
-};
-
-function loadScript(src){
-	var el = document.createElement("script");
-	el.src = src;
-	document.body.appendChild(el);
-} */
 
 function getIce(map){
 	//load icesheet data
