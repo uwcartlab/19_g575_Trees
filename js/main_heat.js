@@ -285,73 +285,77 @@ function updateHeatMap(map, pollen){
 //GOAL: Allow the user to sequence through the attributes and resymbolize the map
 //   according to each attribute
 //1. Create slider widget
-// // Create new sequence controls function
-// function createSequenceControls(map, attributes){
-//  // sets SequenceControl variable
-//  var SequenceControl = L.Control.extend({
-//      options: {
-//          position: 'bottomleft' //control panel position
-//      },
-//      onAdd: function (map) {
-//                  // create the control container div with a particular class name
-//                  var container = L.DomUtil.create('div', 'sequence-control-container');
-//                  //create range input element (slider)
-//                  $(container).append('<input class="range-slider" type="range">');
-//
-//                  // Create skip buttons
-//                  $(container).append('<button class="skip" id="reverse">Reverse</button>');
-//                  $(container).append('<button class="skip" id="forward">Skip</button>');
-//
-//                  //disable any mouse event listeners for the container
-//                  L.DomEvent.disableClickPropagation(container);
-//                  return container;
-//              }
-//          });
-//  // Adds control to map
-//  map.addControl(new SequenceControl());
-//  //set slider attributes
-//  $('.range-slider').attr({
-//      max: 29,
-//      min: 0,
-//      value: 0,
+ // // Create new sequence controls function
+ //function createSequenceControls(map, attributes){
+  // sets SequenceControl variable
+/*   var SequenceControl = L.Control.extend({
+      options: {
+          position: 'bottomleft' //control panel position
+      },
+      onAdd: function (map) {
+                  // create the control container div with a particular class name
+                  var container = L.DomUtil.create('div', 'sequence-control-container');
+
+
+                  // Create skip buttons
+                  $(container).append('<button class="skip" id="reverse">Reverse</button>');
+                  $(container).append('<button class="skip" id="forward">Skip</button>');
+
+                  //disable any mouse event listeners for the container
+                  L.DomEvent.disableClickPropagation(container);
+                  return container;
+              }
+          }); */
+  // Adds control to map
+ // map.addControl(new SequenceControl());
+	//create range input element (slider)
+ // $('#sequence-control-container').append('<input class="range-slider" type="range">');
+    // Create skip buttons
+ // $('#sequence-control-container').append('<button class="skip" id="reverse">Reverse</button>');
+ // $('#sequence-control-container').append('<button class="skip" id="forward">Skip</button>');
+  //set slider attributes
+ // $('.range-slider').attr({
+ //     max: 41,
+ //     min: 0,
+ //     value: 0,
 //      step: 1
 //    });
-//    // Adds forward/backward button images
+    // Adds forward/backward button images
 //    $('#reverse').html('<img src="img/back.png">');
 //    $('#forward').html('<img src="img/next.png">');
-//
-//    //Creates click listener for buttons
+
+    //Creates click listener for buttons
 //    $('.skip').click(function(){
-//        //get the old index value
-//        var index = $('.range-slider').val();
-//
-//        //Step 6: increment or decrement depending on button clicked
 //        if ($(this).attr('id') == 'forward'){
-//            index++;
-//            //Step 7: if past the last attribute, wrap around to first attribute
-//            index = index > 29 ? 0 : index;
-//        } else if ($(this).attr('id') == 'reverse'){
-//            index--;
-//            //Step 7: if past the first attribute, wrap around to last attribute
-//            index = index < 0 ? 29 : index;
-//        };
-//
-//      //update slider
-//      $('.range-slider').val(index);
-//
-//      //pass new attribute to update symbols
-//      updatePropSymbols(map, attributes[index]);
+ //       var index = $('.range-slider').val();
+
+        //Step 6: increment or decrement depending on button clicked
+ //       if ($(this).attr('id') == 'forward'){
+ //           index++;
+            //Step 7: if past the last attribute, wrap around to first attribute
+ //           index = index > 41 ? 0 : index;
+ //       } else if ($(this).attr('id') == 'reverse'){
+ //           index--;
+            //Step 7: if past the first attribute, wrap around to last attribute
+ //           index = index < 0 ? 41 : index;
+ //       };
+
+      //update slider
+      //$('.range-slider').val(index);
+
+      //pass new attribute to update symbols
+      //updatePropSymbols(map, attributes[index]);
 //    });
+
+  //input listener for slider
+  //$('.range-slider').on('input', function(){
+      //get the new index value
+    //  var index = $(this).val();
+      //pass new attribute to update symbols
+      //updatePropSymbols(map, attributes[index]);
+  //});
 //
-//  //input listener for slider
-//  $('.range-slider').on('input', function(){
-//      //get the new index value
-//      var index = $(this).val();
-//      //pass new attribute to update symbols
-//      updatePropSymbols(map, attributes[index]);
-//  });
-//
-// };
+ //};
 // //
 //
 // // Resize proportional symbols according to new attribute values
@@ -411,7 +415,7 @@ function processIce(getIce){
 	return iceAttributes;
 }; */
 
-//// Function to create an array of the sequential attributes
+// Function to create an array of the sequential attributes
 //function processData(data){
 //    //empty array to hold attributes
 //    var attributes = [];
@@ -419,15 +423,15 @@ function processIce(getIce){
 //    //properties of the first feature in the dataset
 //    var properties = data.features[0].properties;
 //
-//    //push each attribute name into attributes array
-//    for (var attribute in properties){
+ //   //push each attribute name into attributes array
+ //   for (var attribute in properties){
 //        //only take attributes with spruce values
 //        if (attribute.indexOf("yr") > -1){
 //            attributes.push(attribute);
 //        };
 //    };
 //    // return attributes as object
-//    return attributes;
+ //   return attributes;
 //};
 
 ////Calculate the max, mean, and min values for a given attribute

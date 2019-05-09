@@ -33,8 +33,8 @@
 			</div>
 		<div id ="expression">
 			<h4>Choose your expression</h4>
-			<a href="#" onclick="changeExpression('heat');">Heatmap</a> |
-			<a href="#" onclick="changeExpression('prop');">Proportional Symbols</a>
+			<button class="w3-button w3-hover-black"><a href="#" onclick="changeExpression('heat');">Map View</a></button>
+			<button class="w3-button w3-hover-black"><a href="#" onclick="changeExpression('prop');">Data View</button>
 		</div>
 		</div>
 
@@ -42,8 +42,9 @@
 		<script type="text/javascript" src="lib/jquery-3.4.0.js"></script>
 		<script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
 		<script type="text/javascript" src="lib/leaflet/leaflet-heat.js"></script>
+		<!--<script type="text/javascript" src="js/main.js"></script>-->
 		<script type="text/javascript" src="js/main_heat.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
+
 		
 
 <!--     <script type="text/javascript" src="js/main.js"></script> -->
@@ -51,14 +52,15 @@
 	</body>
 <script type="text/javascript">
 	let changeExpression = function(type) {
-	map.off();
-	map.remove();
 		let elem = document.createElement("script");
 	if (type === 'heat') {
 		elem.src = "js/main_heat.js";
 	} else {
 		elem.src = "js/main.js";
 	}
+	map.off();
+	map.remove();
+	
 	document.body.appendChild(elem);
 	}
 </script>
