@@ -207,9 +207,6 @@ function createHeatMap(pollen){
 //GOAL: Allow the user to sequence through the attributes and resymbolize the map
 //   according to each attribute
 //1. Create slider widget
-// // Create new sequence controls function
-// function createSequenceControls(map, attributes){
-//  // sets SequenceControl variable
  // // Create new sequence controls function
  //function createSequenceControls(map, attributes){
   // sets SequenceControl variable
