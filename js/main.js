@@ -147,6 +147,7 @@ dropdownLayers["All Data"] =
 	}
 }).addTo(map); */
 
+
 function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
