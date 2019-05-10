@@ -21,7 +21,7 @@ function createMap(){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/final_pollendata.geojson"));
+	promises.push($.getJSON("data/quercus.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	promises.push($.getJSON("data/ice5000.geojson")); //ice test
 	promises.push($.getJSON("data/ice6000.geojson"));
@@ -198,7 +198,7 @@ function createPopup(properties, attribute, layer, radius){
     //add formatted attribute to panel content string
     var year = attribute.substring(2);
     //Creates spruce data content string
-    popupContent += "<p><b>Spruce Percent:</b> " + Math.floor(properties[attribute]*100) / 100 + "%</p>";
+    popupContent += "<p><b>Oak Percent:</b> " + Math.floor(properties[attribute]*100) / 100 + "%</p>";
 
     //replace the layer popup
     layer.bindPopup(popupContent, {
@@ -512,7 +512,7 @@ function createLegend(map, attributes, attribute){
 function updateLegend(map, attribute){
     //create content for legend
     var year = attribute.substring(2);
-    var content = ("Spruce " + year + " years ago").bold().fontsize(3);
+    var content = ("Oak " + year + " years ago").bold().fontsize(3);
     //replace legend content
     $('#temporal-legend').html(content);
 
@@ -551,7 +551,7 @@ function getIce(map){
 // Import GeoJSON data
 function getData(map){
     //load the data
-    $.ajax("data/pollendata.geojson", { //changed to FINAL_POLLENDATA
+    $.ajax("data/quercus.geojson", { //changed to FINAL_POLLENDATA
         dataType: "json",
         success: function(response){
 
