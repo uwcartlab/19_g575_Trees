@@ -155,10 +155,10 @@ function createOverlay(map, getData, data, attributes){ //getIce){
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
 	var yr14000 = L.geoJSON(ice14k).addTo(map);
-  // var taxon_prop = L.geoJson(data, {
-  //         pointToLayer: function(feature, latlng){
-  //             return pointToLayer(feature, latlng, attributes);
-  //         }.addTo(map);
+  var taxon_prop = L.geoJson(data, {
+          pointToLayer: function(feature, latlng){
+              return pointToLayer(feature, latlng, attributes);
+          }});
 	console.log(ice.features[0]);
 
 	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),

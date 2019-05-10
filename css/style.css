@@ -1,7 +1,7 @@
 /* Stylesheet by Anna E. George, 2019 */
 
 /* defines map height, width, and display type*/
-#mapid { 
+#mapid {
 	height: 712px; /*had been 700px*/
 	width: 79%; /*had been 69%*/
 	display: inline-block;
@@ -49,7 +49,7 @@
 }
 
 #panel {
-	height: 700px; 
+	height: 700px;
 	width: 20%; /*had been 27%*/
 	display: inline-block;
 	float: left;
