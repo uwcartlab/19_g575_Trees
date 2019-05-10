@@ -21,7 +21,7 @@ function createMap(){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/pollendata.geojson"));
+	promises.push($.getJSON("data/final_pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	promises.push($.getJSON("data/ice5000.geojson")); //ice test
 	promises.push($.getJSON("data/ice6000.geojson"));
@@ -47,7 +47,7 @@ function createMap(){
     getData(map);
 	//call navPanel function
 //navPanel();
-	// createOverlay(map, getData);
+	createOverlay(map, getData);
 };
 
 function callback(data){
@@ -65,7 +65,7 @@ function callback(data){
 	ice12750 = data[10];
 	ice13500 = data[11];
 	ice14k = data[12];
-
+	
 	//TAXA Data
 	alnus = data[13];
 	ambrosia = data[14];
@@ -75,7 +75,7 @@ function callback(data){
 	poaceae = data[18];
 	quercus = data[19];
 	tsuga = data[20];
-
+	
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
@@ -84,29 +84,15 @@ function callback(data){
 	//loadScript(src)
 
 	var attributes = processData(response);
-	var taxa_prop = createPropSymbols(response, map, attributes);
+	createPropSymbols(response, map, attributes);
 	createSequenceControls(map, attributes);
 	createLegend(map,attributes);
 	updateLegend(map, attributes[0]);
-  console.log(taxa_prop)
-
-  createLayerControl(response, map, attributes);
 };
 
 //Puts map on webpage
 $(document).ready(createMap);
 
-function createLayerControl(response, map, attributes){
-  var groupedOverlays = {
-    "Tree and Plant Taxa": {
-      "Spruce": picea,
-      "Pine": pinus
-    },
-    "Glacial Extent": ice
-
-  }
-L.control.groupedLayers(groupedOverlays).addTo(map);
-};
 /* var dropdownLayers = {};
 dropdownLayers["All Data"] =
 	{ name: "All Data",
@@ -140,12 +126,10 @@ dropdownLayers["All Data"] =
 	}
 }).addTo(map); */
 
-function createOverlay(map, getData/*, data, attributes*/){ //getIce){
+function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
-	var iceLayer = 
-		L.geoJSON(ice)
-			.bindPopup('All ice sheets').addTo(map);
+	var iceLayer = L.geoJSON(ice).addTo(map);
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
 	var yr7000 = L.geoJSON(ice7k).addTo(map);
@@ -157,12 +141,16 @@ function createOverlay(map, getData/*, data, attributes*/){ //getIce){
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
 	var yr14000 = L.geoJSON(ice14k).addTo(map);
-  // var taxon_prop = L.geoJson(data, {
-  //         pointToLayer: function(feature, latlng){
-  //             return pointToLayer(feature, latlng, attributes);
-  //         }.addTo(map);
 	console.log(ice.features[0]);
 
+	// var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+	// 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
+  //
+	// var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+	// 	osmAttrib = '&copy; ' + osmLink + ' Contributors',
+	// 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+	// 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
+  //
 	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
 	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
@@ -172,7 +160,7 @@ function createOverlay(map, getData/*, data, attributes*/){ //getIce){
 	// };
 
 	var overlays = {
-		"All Ice Sheets": iceLayer,
+		"Ice Sheets": iceLayer,
 		"5000": yr5000, //ice test
 		"6000": yr6000,
 		"7000": yr7000,
@@ -183,11 +171,10 @@ function createOverlay(map, getData/*, data, attributes*/){ //getIce){
 		"11000": yr11000,
 		"12750": yr12750,
 		"13500": yr13500,
-		"14000": yr14000,
-		//"Taxon": taxon_prop
+		"14000": yr14000
 	};
 
-	L.control.layers(overlays,null,{collapsed:false}).addTo(map);
+	L.control.layers(/*baseLayers,*/overlays).addTo(map);
 };
 
 // Function to create popups
@@ -329,15 +316,15 @@ function createSequenceControls(map, attributes){
 		options: {
 			position: 'bottomleft'
 		},
-
+		
 		onAdd: function (map) {
 			var container = L.DomUtil.create('div', 'sequence-control-container');
-
+			
 			$(container).append('<input class="range-slider" type="range">');
 			$(container).append('<button class="skip" id="reverse" title="Reverse">Reverse</button>');
 			$(container).append('<button class="skip" id="forward" title="Forward">Skip</button>');
 
-
+			
 			L.DomEvent.disableClickPropagation(container);
 			return container;
 		}
@@ -410,8 +397,8 @@ function updatePropSymbols(map, attribute){
 function processData(data){
     //empty array to hold attributes
     var attributes = [];
-	
-   //properties of the first feature in the dataset
+
+    //properties of the first feature in the dataset
     var properties = data.features[0].properties;
 
     //push each attribute name into attributes array
@@ -534,28 +521,6 @@ function updateLegend(map, attribute){
 	};
 };
 
-
-/* function changeExpression(src){
-    var heat = document.createElement("script");
-		heat.src = "js/main_heat.js";
-		document.body.appendChild(heat);
-	var prop = document.createElement("script");
-		prop.src = "js/main.js";
-		document.body.appendChild(prop);
-
-	if (src === "heat"){
-		loadScript("js/main_heat.js");
-	} else if (src === "prop"){
-		loadScript("js/main.js");
-	}
-};
-
-function loadScript(src){
-	var el = document.createElement("script");
-	el.src = src;
-	document.body.appendChild(el);
-} */
-
 function getIce(map){
 	//load icesheet data
 	$.ajax("data/icesheets.geojson", {
@@ -564,7 +529,7 @@ function getIce(map){
 			//create array
 			var iceAttributes = getIce(response);
 			//call function
-			 //createOverlay(map, getIce);
+			createOverlay(map, getIce);
 		}
 	});
 };
