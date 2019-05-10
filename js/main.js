@@ -62,7 +62,7 @@ function createMap(){
     getData(map);
 	//call navPanel function
 //navPanel();
-	createOverlay(map, getData);
+	//createOverlay(map, getData);
 };
 
 function callback(data){
@@ -142,7 +142,6 @@ dropdownLayers["All Data"] =
 }).addTo(map); */
 
 function createOverlay(map, getData){ //getIce){
-
 	//Define overlay/popup content
 	var iceLayer = L.geoJSON(ice).addTo(map);
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
@@ -256,6 +255,7 @@ function createPropSymbols(data, map, attributes){
         pointToLayer: function(feature, latlng){
             return pointToLayer(feature, latlng, attributes);
         }
+	
     }).addTo(map);
 };
 
@@ -331,7 +331,6 @@ function createSequenceControls(map, attributes){
 		options: {
 			position: 'bottomleft'
 		},
-		
 		onAdd: function (map) {
 			var container = L.DomUtil.create('div', 'sequence-control-container');
 			
@@ -339,53 +338,52 @@ function createSequenceControls(map, attributes){
 			$(container).append('<button class="skip" id="reverse" title="Reverse">Reverse</button>');
 			$(container).append('<button class="skip" id="forward" title="Forward">Skip</button>');
 
-			
 			L.DomEvent.disableClickPropagation(container);
 			return container;
 		}
 	});
 	map.addControl(new SequenceControl());
-		  //set slider attributes
-	  $('.range-slider').attr({
+	//set slider attributes
+	$('.range-slider').attr({
 		  max: 41,
 		  min: 0,
 		  value: 0,
 		  step: 1
 		});
-		// Adds forward/backward button images
-		$('#reverse').html('<img src="img/back.png">');
-		$('#forward').html('<img src="img/next.png">');
+	// Adds forward/backward button images
+	$('#reverse').html('<img src="img/back.png">');
+	$('#forward').html('<img src="img/next.png">');
 
-		//Creates click listener for buttons
-		$('.skip').click(function(){
-			//get the old index value
-			var index = $('.range-slider').val();
+	//Creates click listener for buttons
+	$('.skip').click(function(){
+		//get the old index value
+		var index = $('.range-slider').val();
 
-			//Step 6: increment or decrement depending on button clicked
-			if ($(this).attr('id') == 'forward'){
-				index++;
-				//Step 7: if past the last attribute, wrap around to first attribute
-				index = index > 41 ? 0 : index;
-			} else if ($(this).attr('id') == 'reverse'){
-				index--;
-				//Step 7: if past the first attribute, wrap around to last attribute
-				index = index < 0 ? 41 : index;
-			};
+		//Step 6: increment or decrement depending on button clicked
+		if ($(this).attr('id') == 'forward'){
+			index++;
+			//Step 7: if past the last attribute, wrap around to first attribute
+			index = index > 41 ? 0 : index;
+		} else if ($(this).attr('id') == 'reverse'){
+			index--;
+			//Step 7: if past the first attribute, wrap around to last attribute
+			index = index < 0 ? 41 : index;
+		};
 
-		  //update slider
-		  $('.range-slider').val(index);
+	  //update slider
+	  $('.range-slider').val(index);
 
-		  //pass new attribute to update symbols
-		  updatePropSymbols(map, attributes[index]);
-		});
+	  //pass new attribute to update symbols
+	  updatePropSymbols(map, attributes[index]);
+	});
 
-	  //input listener for slider
-	  $('.range-slider').on('input', function(){
-		  //get the new index value
-		  var index = $(this).val();
-		  //pass new attribute to update symbols
-		  updatePropSymbols(map, attributes[index]);
-	  });
+  //input listener for slider
+	$('.range-slider').on('input', function(){
+	  //get the new index value
+	  var index = $(this).val();
+	  //pass new attribute to update symbols
+	  updatePropSymbols(map, attributes[index]);
+	});
 };
 
 // Resize proportional symbols according to new attribute values
@@ -399,8 +397,8 @@ function updatePropSymbols(map, attribute){
 
             //update each feature's radius based on new attribute values
             var radius = calcPropRadius(props[attribute]);
-            layer.setRadius(radius);
-
+            layer.radius;
+			
             // Calls popup and update legend functions
             createPopup(props, attribute, layer, radius);
             updateLegend(map, attribute);
@@ -544,7 +542,7 @@ function getIce(map){
 			//create array
 			var iceAttributes = getIce(response);
 			//call function
-			createOverlay(map, getIce);
+			//createOverlay(map, getIce);
 		}
 	});
 };
