@@ -47,7 +47,7 @@ function createMap(){
     getData(map);
 	//call navPanel function
 //navPanel();
-	createOverlay(map, getData);
+	//createOverlay(map, getData);
 };
 
 function callback(data){
@@ -529,7 +529,7 @@ function getIce(map){
 			//create array
 			var iceAttributes = getIce(response);
 			//call function
-			createOverlay(map, getIce);
+			//createOverlay(map, getIce);
 		}
 	});
 };

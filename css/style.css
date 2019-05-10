@@ -2,7 +2,7 @@
 
 /* defines map height, width, and display type*/
 #mapid { height: 712px;
-				 width: 69%;
+				 width: 79%;/*69%;*/
 				 display: inline-block;
 }
 
@@ -35,8 +35,8 @@
 }
 #forward {
     float: right;
-		padding: 3px;
-		offset: 5px;
+		/*padding: 3px;
+		offset: 5px;*/
 }
 #reverse {
     float: left;
@@ -44,7 +44,7 @@
 
 #panel {
 	height: 700px;
-	width: 27%;
+	width: 20%;/*27%;*/
 	display: inline-block;
 	float: left;
 	color: black;
