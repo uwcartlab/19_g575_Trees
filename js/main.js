@@ -5,8 +5,8 @@ var map;
 function createMap(){
     //creates map & set center/zoom
     map = L.map('mapid', {
-        center: [50, -80],
-        zoom: 3.8,
+        center: [50, -100],
+        zoom: 3.3,
         maxZoom: 7,
         minZoom: 2.3
     });
@@ -21,7 +21,7 @@ function createMap(){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/final_pollendata.geojson"));
+	promises.push($.getJSON("data/quercus.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	promises.push($.getJSON("data/ice5000.geojson")); //ice test
 	promises.push($.getJSON("data/ice6000.geojson"));
@@ -42,12 +42,16 @@ function createMap(){
 	promises.push($.getJSON("data/poaceae.geojson"));
 	promises.push($.getJSON("data/quercus.geojson"));
 	promises.push($.getJSON("data/tsuga.geojson"));
+	promises.push($.getJSON("data/ice15000.geojson"));
+	promises.push($.getJSON("data/ice16000.geojson"));
+	promises.push($.getJSON("data/ice17000.geojson"));
+	promises.push($.getJSON("data/ice18000.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
     getData(map);
 	//call navPanel function
 //navPanel();
-	// createOverlay(map, getData);
+	//createOverlay(map, getData);
 };
 
 function callback(data){
@@ -76,6 +80,12 @@ function callback(data){
 	quercus = data[19];
 	tsuga = data[20];
 
+	none = data[21];
+	ice15k = data[22];
+	ice16k = data[23];
+	ice17k = data[24];
+	ice18k = data[25];
+
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
@@ -84,13 +94,10 @@ function callback(data){
 	//loadScript(src)
 
 	var attributes = processData(response);
-	var taxa_prop = createPropSymbols(response, map, attributes);
+	createPropSymbols(response, map, attributes);
 	createSequenceControls(map, attributes);
 	createLegend(map,attributes);
 	updateLegend(map, attributes[0]);
-  console.log(taxa_prop)
-
-  // createLayerControl(response, map, attributes);
 };
 
 //Puts map on webpage
@@ -140,29 +147,47 @@ dropdownLayers["All Data"] =
 	}
 }).addTo(map); */
 
-function createOverlay(map, getData, data, attributes){ //getIce){
+function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
-	var iceLayer = L.geoJSON(ice).addTo(map);
+	var none = L.geoJSON(none).addTo(map);
+	var iceLayer =
+		L.geoJSON(ice)
+			.bindPopup('All Ice Sheets').addTo(map);
+
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
-	var yr7000 = L.geoJSON(ice7k).addTo(map);
-	var yr8000 = L.geoJSON(ice8k).addTo(map);
-	var yr9000 = L.geoJSON(ice9k).addTo(map);
+	var yr7000 = L.geoJSON(ice7k)
+		.bindPopup('In China, rice and other crops are domesticated. The English Channel is formed.').addTo(map);
+	var yr8000 = L.geoJSON(ice8k)
+		.bindPopup('Between 8,000 and 7,000 BCE, Mesopotamian cultures began cultivating barley and wheat.').addTo(map);
+	var yr9000 = L.geoJSON(ice9k)
+		.bindPopup('~9,000 BCE marks the begining of the Holocene. The Last Glacial Maximum begins to retreat. Star Carr, a Mesolithic settlement, is founded in North Yorkshire, England.').addTo(map);
 	var yr10000 = L.geoJSON(ice10k).addTo(map);
 	var yr10250 = L.geoJSON(ice10250).addTo(map);
-	var yr11000 = L.geoJSON(ice11k).addTo(map);
+	var yr11000 = L.geoJSON(ice11k)
+		.bindPopup().addTo(map);
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
-	var yr14000 = L.geoJSON(ice14k).addTo(map);
-  var taxon_prop = L.geoJson(data, {
-          pointToLayer: function(feature, latlng){
-              return pointToLayer(feature, latlng, attributes);
-          }});
+	var yr14000 =
+		L.geoJSON(ice14k)
+			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at Lascaux Cave in southern France.').addTo(map);
+	var yr15000 = L.geoJSON(ice15k).addTo(map);
+	var yr16000 = L.geoJSON(ice16k).addTo(map);
+	var yr17000 = L.geoJSON(ice17k).addTo(map);
+	var yr18000 = L.geoJSON(ice18k).addTo(map);
 	console.log(ice.features[0]);
 
-	var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
-		bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
+	// var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+	// 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
+  //
+	// var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+	// 	osmAttrib = '&copy; ' + osmLink + ' Contributors',
+	// 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+	// 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
+  //
+	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
 	var baseLayers = {
 		"Birch": alnus,
@@ -170,7 +195,8 @@ function createOverlay(map, getData, data, attributes){ //getIce){
 	};
 
 	var overlays = {
-		"Ice Sheets": iceLayer,
+		"None": none,
+		"All Ice Sheets": iceLayer,
 		"5000": yr5000, //ice test
 		"6000": yr6000,
 		"7000": yr7000,
@@ -181,9 +207,14 @@ function createOverlay(map, getData, data, attributes){ //getIce){
 		"11000": yr11000,
 		"12750": yr12750,
 		"13500": yr13500,
-		"14000": yr14000
+		"14000": yr14000,
+		"15000": yr15000,
+		"16000": yr16000,
+		"17000": yr17000,
+		"18000": yr18000
 	};
-	L.control.groupedLayers(overlays,null,{collapsed:false}).addTo(map);
+
+	L.control.layers(/*baseLayers,*/overlays, null,{collapsed:false}).addTo(map);
 };
 
 // Function to create popups
@@ -193,7 +224,7 @@ function createPopup(properties, attribute, layer, radius){
     //add formatted attribute to panel content string
     var year = attribute.substring(2);
     //Creates spruce data content string
-    popupContent += "<p><b>Spruce Percent:</b> " + Math.floor(properties[attribute]*100) / 100 + "%</p>";
+    popupContent += "<p><b>Oak Percent:</b> " + Math.floor(properties[attribute]*100) / 100 + "%</p>";
 
     //replace the layer popup
     layer.bindPopup(popupContent, {
@@ -507,7 +538,7 @@ function createLegend(map, attributes, attribute){
 function updateLegend(map, attribute){
     //create content for legend
     var year = attribute.substring(2);
-    var content = ("Spruce " + year + " years ago").bold().fontsize(3);
+    var content = ("Oak " + year + " years ago").bold().fontsize(3);
     //replace legend content
     $('#temporal-legend').html(content);
 
@@ -530,28 +561,6 @@ function updateLegend(map, attribute){
 	};
 };
 
-
-/* function changeExpression(src){
-    var heat = document.createElement("script");
-		heat.src = "js/main_heat.js";
-		document.body.appendChild(heat);
-	var prop = document.createElement("script");
-		prop.src = "js/main.js";
-		document.body.appendChild(prop);
-
-	if (src === "heat"){
-		loadScript("js/main_heat.js");
-	} else if (src === "prop"){
-		loadScript("js/main.js");
-	}
-};
-
-function loadScript(src){
-	var el = document.createElement("script");
-	el.src = src;
-	document.body.appendChild(el);
-} */
-
 function getIce(map){
 	//load icesheet data
 	$.ajax("data/icesheets.geojson", {
@@ -560,7 +569,7 @@ function getIce(map){
 			//create array
 			var iceAttributes = getIce(response);
 			//call function
-			 createOverlay(map, getIce);
+			//createOverlay(map, getIce);
 		}
 	});
 };
@@ -568,7 +577,7 @@ function getIce(map){
 // Import GeoJSON data
 function getData(map){
     //load the data
-    $.ajax("data/pollendata.geojson", { //changed to FINAL_POLLENDATA
+    $.ajax("data/quercus.geojson", { //changed to FINAL_POLLENDATA
         dataType: "json",
         success: function(response){
 

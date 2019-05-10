@@ -6,11 +6,18 @@
 	width: 79%; /*had been 69%*/
 	display: inline-block;
 }
-
-#intro {
+#welcome {
+	font-family: 'Rubik', sans-serif;
 	text-align: justify;
-	padding: 10px;
+	padding: 20px;
 }
+#footer {
+	font-family: 'Rubik', sans-serif;
+	text-align: justify;
+	line-height: 14px;
+	font-size: 0.8em;
+}
+
 
 .iceLayer {
 	opacity: 50%;
@@ -24,6 +31,7 @@
     line-height: 45px;
     text-align: left;
     border: solid gray 1px;
+	box-shadow: 5px 8px 8px #888888;
 }
 
 /* Sets style for title container*/
@@ -41,8 +49,8 @@
 }
 #forward {
     float: right;
-	/*padding: 3px;
-	offset: 5px;*/
+		/*padding: 3px;
+		offset: 5px;*/
 }
 #reverse {
     float: left;
@@ -58,6 +66,7 @@
 	text-align: center;
 	border:  solid black 1px;
 	padding: 5px;
+	font-family: 'Rubik', sans-serif;
 }
 
 /* Sets style for sequence control container*/

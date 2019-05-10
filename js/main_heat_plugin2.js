@@ -4,8 +4,8 @@ var map;
 function createMap(heatmapLayer){
     //creates map & set center/zoom
     map = L.map('mapid', {
-        center: [50, -100],
-        zoom: 3.3,
+        center: [50, -80],
+        zoom: 3.8,
         minZoom:2.3,
         layer: heatmapLayer
     });
@@ -20,24 +20,8 @@ function createMap(heatmapLayer){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/final_pollendata.geojson"));
+	promises.push($.getJSON("data/pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
-	promises.push($.getJSON("data/ice5000.geojson")); //ice test
-	promises.push($.getJSON("data/ice6000.geojson"));
-	promises.push($.getJSON("data/ice7000.geojson"));
-	promises.push($.getJSON("data/ice8000.geojson"));
-	promises.push($.getJSON("data/ice9000.geojson"));
-	promises.push($.getJSON("data/ice10000.geojson"));
-	promises.push($.getJSON("data/ice10250.geojson"));
-	promises.push($.getJSON("data/ice11000.geojson"));
-	promises.push($.getJSON("data/ice12750.geojson"));
-	promises.push($.getJSON("data/ice13500.geojson"));
-	promises.push($.getJSON("data/ice14000.geojson"));
-	promises.push($.getJSON("data/none.geojson"));
-	promises.push($.getJSON("data/ice15000.geojson"));
-	promises.push($.getJSON("data/ice16000.geojson"));
-	promises.push($.getJSON("data/ice17000.geojson"));
-	promises.push($.getJSON("data/ice18000.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
     getData(map);
@@ -49,33 +33,17 @@ function createMap(heatmapLayer){
 function callback(data){
 	pollen = data[0];
 	ice = data[1];
-	ice5k = data[2];
-	ice6k = data[3];
-	ice7k = data[4];
-	ice8k = data[5];
-	ice9k = data[6];
-	ice10k = data[7];
-	ice10250 = data[8];
-	ice11k = data[9];
-	ice12750 = data[10];
-	ice13500 = data[11];
-	ice14k = data[12];
-	none = data [13];
-	ice15k = data[14];
-	ice16k = data[15];
-	ice17k = data[16];
-	ice18k = data[17];
 
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 //	var icelayer = L.geoJSON(ice).addTo(map);
-	createOverlay(map, getData)
+//	createOverlay(map, icelayer)
 
 
 //	var attributes = processData(response);
 //	createPropSymbols(response, map, attributes);
 //	createSequenceControls(map, pollen);
-	createLegend(map);
+//	createLegend(map,attributes);
 //	updateLegend(map, attributes[0]);
     createHeatMap(pollen);
 };
@@ -85,216 +53,132 @@ function callback(data){
 $(document).ready(createMap);
 
 
+function createHeatMap(pollen){
+
+    var latitude = []
+    var longitude = []
+    var pollenCount = []
+    var sitedata = []
+    
+    //for(var i=0; i<6; i++){
+        pollen.features.map(function(row) {
+              // the heatmap plugin wants an array of each location
+            var latsite = row.geometry.coordinates[1];
+            var longsite = row.geometry.coordinates[0];
+            longitude.push(longsite);
+            var sitepollen = row.properties.yr7750;
+            pollenCount.push(sitepollen)
+            latitude.push(latsite);
+
+            sitedata.push({lat: latsite, lng: longsite, count: pollenCount})
+//            pollendata.push(sitedata)
+//
+        });
+console.log(sitedata)
+    // don't forget to include leaflet-heatmap.js
+    var testData = {
+      max: 100,
+      data: [sitedata]
+    };
+
+
+
+    var cfg = {
+      // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+      // if scaleRadius is false it will be the constant radius used in pixels
+      "radius": 2,
+      "maxOpacity": .8, 
+      // scales the radius based on map zoom
+      "scaleRadius": true, 
+      // if set to false the heatmap uses the global maximum for colorization
+      // if activated: uses the data maximum within the current map boundaries 
+      //   (there will always be a red spot with useLocalExtremas true)
+      "useLocalExtrema": true,
+      // which field name in your data represents the latitude - default "lat"
+      latField: latitude,
+      // which field name in your data represents the longitude - default "lng"
+      lngField: longitude,
+      // which field name in your data represents the data value - default "value"
+      valueField: pollenCount
+    };
+console.log(cfg)
+
+
+//    var heatmapLayer = new HeatmapOverlay(cfg);
+//
+//    var map = new L.Map('map-canvas', {
+//      center: new L.LatLng(25.6586, -80.3568),
+//      zoom: 4,
+//      layers: [heatmapLayer]
+//    });
+
+//    heatmapLayer.setData(testData);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+////create heat map
 //function createHeatMap(pollen){
-//
-//    var latitude = []
-//    var longitude = []
-//    var pollenCount = []
-//    var sitedata = []
 //    
-//    //for(var i=0; i<6; i++){
-//        pollen.features.map(function(row) {
-//              // the heatmap plugin wants an array of each location
-//            var latsite = row.geometry.coordinates[1];
-//            var longsite = row.geometry.coordinates[0];
-//            longitude.push(longsite);
-//            var sitepollen = row.properties.yr7750;
-//            pollenCount.push(sitepollen)
-//            latitude.push(latsite);
+//    var locations = pollen.features.map(function(row) {
+//      // the heatmap plugin wants an array of each location
+//      var location = row.geometry.coordinates.reverse();
+//      location.push(.5);
+//      return location; // [50.5, 30.5, 0.2], [lat, lng, intensity]
+//    });
 //
-//            sitedata.push({lat: latsite, lng: longsite, count: pollenCount})
-////            pollendata.push(sitedata)
-////
-//        });
-//console.log(sitedata)
-//    // don't forget to include leaflet-heatmap.js
-//    var testData = {
-//      max: 100,
-//      data: [sitedata]
-//    };
+//      var heat = L.heatLayer(locations, { 
+//       minOpacity: 0.3,
+//       radius: 20,
+//        blur:10,
+//        maxZoom:5,
+//        max:100,
+//       gradient: {
+//           0.1: 'purple',
+//           0.2: 'cyan',
+//           0.3: '#2b83ba',
+//           0.4: 'green',
+//           0.6: 'yellow',
+//           0.8: 'orange',
+//           0.9: '#d7191c',
+//           1: 'red'
+//       } 
+//   });
+//         
+//    map.addLayer(heat);
 //
-//
-//
-//    var cfg = {
-//      // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-//      // if scaleRadius is false it will be the constant radius used in pixels
-//      "radius": 2,
-//      "maxOpacity": .8, 
-//      // scales the radius based on map zoom
-//      "scaleRadius": true, 
-//      // if set to false the heatmap uses the global maximum for colorization
-//      // if activated: uses the data maximum within the current map boundaries 
-//      //   (there will always be a red spot with useLocalExtremas true)
-//      "useLocalExtrema": true,
-//      // which field name in your data represents the latitude - default "lat"
-//      latField: latitude,
-//      // which field name in your data represents the longitude - default "lng"
-//      lngField: longitude,
-//      // which field name in your data represents the data value - default "value"
-//      valueField: pollenCount
-//    };
-//console.log(cfg)
-//
-//
-////    var heatmapLayer = new HeatmapOverlay(cfg);
-////
-////    var map = new L.Map('map-canvas', {
-////      center: new L.LatLng(25.6586, -80.3568),
-////      zoom: 4,
-////      layers: [heatmapLayer]
-////    });
-//
-////    heatmapLayer.setData(testData);
 //};
 
-function createOverlay(map, getData){ //getIce){
 
-	//Define overlay/popup content
-	var iceLayer = 
-		L.geoJSON(ice)
-			.bindPopup('All ice sheets').addTo(map);
-	var none = L.geoJSON(none).addTo(map);
-	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
-	var yr6000 = L.geoJSON(ice6k).addTo(map);
-	var yr7000 = L.geoJSON(ice7k)
-		.bindPopup('In China, rice and other crops are domesticated. The English Channel is formed.').addTo(map);
-	var yr8000 = L.geoJSON(ice8k)
-		.bindPopup('Between 8,000 and 7,000 BCE, Mesopotamian cultures began cultivating barley and wheat.').addTo(map);
-	var yr9000 = L.geoJSON(ice9k)
-		.bindPopup('~9,000 BCE marks the begining of the Holocene. The Last Glacial Maximum begins to retreat. Star Carr, a Mesolithic settlement, is founded in North Yorkshire, England.').addTo(map);
-	var yr10000 = L.geoJSON(ice10k).addTo(map);
-	var yr10250 = L.geoJSON(ice10250).addTo(map);
-	var yr11000 = L.geoJSON(ice11k)
-		.bindPopup().addTo(map);
-	var yr12750 = L.geoJSON(ice12750).addTo(map);
-	var yr13500 = L.geoJSON(ice13500).addTo(map);
-	var yr14000 = 
-		L.geoJSON(ice14k)
-			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at Lascaux Cave in southern France.').addTo(map);
-	var yr15000 = L.geoJSON(ice15k).addTo(map);
-	var yr16000 = L.geoJSON(ice16k).addTo(map);
-	var yr17000 = L.geoJSON(ice17k).addTo(map);
-	var yr18000 = L.geoJSON(ice18k).addTo(map);
-	console.log(ice.features[0]);
 
-/* 	 var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
-	 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
-  
-	 var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-		osmAttrib = '&copy; ' + osmLink + ' Contributors',
-	 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
-	 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
-  
-	 var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
-	 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
-	 var baseLayers = {
-	 	"OSM Mapnik": osmMap,
-	 	"Greyscale": bwMap
-	}; */
 
-	var overlays = {
-		"None": none,
-		"All Ice Sheets": iceLayer,
-		"5000": yr5000, //ice test
-		"6000": yr6000,
-		"7000": yr7000,
-		"8000": yr8000,
-		"9000": yr9000,
-		"10000": yr10000,
-		"10250": yr10250,
-		"11000": yr11000,
-		"12750": yr12750,
-		"13500": yr13500,
-		"14000": yr14000,
-		"15000": yr15000,
-		"16000": yr16000,
-		"17000": yr17000,
-		"18000": yr18000
-	};
 
-	L.control.layers(/* baseLayers, */overlays,null,{collapsed:false}).addTo(map);
-};
 
-//create heat map
-function createHeatMap(pollen){
-    
-    var locations = pollen.features.map(function(row) {
-      // the heatmap plugin wants an array of each location
-      var location = row.geometry.coordinates.reverse();
-      location.push(.5);
-      return location; // [50.5, 30.5, 0.2], [lat, lng, intensity]
-    });
 
-      var heat = L.heatLayer(locations, { 
-       minOpacity: 0.3,
-       radius: 20,
-        blur:10,
-        maxZoom:5,
-        max:100,
-       gradient: {
-           0.1: 'purple',
-           0.2: 'cyan',
-           0.3: '#2b83ba',
-           0.4: 'green',
-           0.6: 'yellow',
-           0.8: 'orange',
-           0.9: '#d7191c',
-           1: 'red'
-       } 
-   });
-         
-    map.addLayer(heat);
 
-};
 
-// function to create the legend
-function createLegend(map, attributes, attribute){
-    // Creates legend control variable
-    var LegendControl = L.Control.extend({
-        options: {
-            position: 'bottomright' // sets position on screen
-        },
-        onAdd: function (map) {
-            // create the control container with a particular class name
-            var container = L.DomUtil.create('div', 'legend-control-container');
 
-            //add temporal legend div to container
-            $(container).append('<div id="temporal-legend">');
 
-            //Step 1: start attribute legend svg string
-            var svg = '<svg id="attribute-legend" width="160px" height="15px">';
-			//var legendImg = "img/heat-scale.png"
-/*             //variable for circle names and positions
-            var circles = {
-              max: 20,
-              mean: 40,
-              min: 60
-          };
 
-            //loop to add each circle and text to svg string
-            for (var circle in circles){
-                //circle string
-                svg += '<circle class="legend-circle" id="' + circle + '" fill="#228B22" fill-opacity="0.8" stroke="#000000" cx="30"/>';
 
-                //text string
-                svg += '<text id="' + circle + '-text" x="65" y="' + circles[circle] + '"></text>';
-            };
- */
-            //close svg string
-            svg += "</svg>";
-
-            //add attribute legend svg to container
-            $(container).append('<img id="theLegend" src="img/heat-scale1.png"/>');
-            // return container as object
-            return container;
-        }
-    });
-    // adds to map
-    map.addControl(new LegendControl());
-    // calls update legend function
-    //updateLegend(map, attributes[0]);
-};
 
 
 
