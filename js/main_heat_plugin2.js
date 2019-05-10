@@ -4,8 +4,8 @@ var map;
 function createMap(heatmapLayer){
     //creates map & set center/zoom
     map = L.map('mapid', {
-        center: [50, -100],
-        zoom: 3.3,
+        center: [50, -80],
+        zoom: 3.8,
         minZoom:2.3,
         layer: heatmapLayer
     });
@@ -20,7 +20,7 @@ function createMap(heatmapLayer){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/final_pollendata.geojson"));
+	promises.push($.getJSON("data/pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
@@ -53,118 +53,118 @@ function callback(data){
 $(document).ready(createMap);
 
 
-//function createHeatMap(pollen){
-//
-//    var latitude = []
-//    var longitude = []
-//    var pollenCount = []
-//    var sitedata = []
-//    
-//    //for(var i=0; i<6; i++){
-//        pollen.features.map(function(row) {
-//              // the heatmap plugin wants an array of each location
-//            var latsite = row.geometry.coordinates[1];
-//            var longsite = row.geometry.coordinates[0];
-//            longitude.push(longsite);
-//            var sitepollen = row.properties.yr7750;
-//            pollenCount.push(sitepollen)
-//            latitude.push(latsite);
-//
-//            sitedata.push({lat: latsite, lng: longsite, count: pollenCount})
-////            pollendata.push(sitedata)
-////
-//        });
-//console.log(sitedata)
-//    // don't forget to include leaflet-heatmap.js
-//    var testData = {
-//      max: 100,
-//      data: [sitedata]
-//    };
-//
-//
-//
-//    var cfg = {
-//      // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-//      // if scaleRadius is false it will be the constant radius used in pixels
-//      "radius": 2,
-//      "maxOpacity": .8, 
-//      // scales the radius based on map zoom
-//      "scaleRadius": true, 
-//      // if set to false the heatmap uses the global maximum for colorization
-//      // if activated: uses the data maximum within the current map boundaries 
-//      //   (there will always be a red spot with useLocalExtremas true)
-//      "useLocalExtrema": true,
-//      // which field name in your data represents the latitude - default "lat"
-//      latField: latitude,
-//      // which field name in your data represents the longitude - default "lng"
-//      lngField: longitude,
-//      // which field name in your data represents the data value - default "value"
-//      valueField: pollenCount
-//    };
-//console.log(cfg)
-//
-//
-////    var heatmapLayer = new HeatmapOverlay(cfg);
-////
-////    var map = new L.Map('map-canvas', {
-////      center: new L.LatLng(25.6586, -80.3568),
-////      zoom: 4,
-////      layers: [heatmapLayer]
-////    });
-//
-////    heatmapLayer.setData(testData);
-//};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//create heat map
 function createHeatMap(pollen){
+
+    var latitude = []
+    var longitude = []
+    var pollenCount = []
+    var sitedata = []
     
-    var locations = pollen.features.map(function(row) {
-      // the heatmap plugin wants an array of each location
-      var location = row.geometry.coordinates.reverse();
-      location.push(.5);
-      return location; // [50.5, 30.5, 0.2], [lat, lng, intensity]
-    });
+    //for(var i=0; i<6; i++){
+        pollen.features.map(function(row) {
+              // the heatmap plugin wants an array of each location
+            var latsite = row.geometry.coordinates[1];
+            var longsite = row.geometry.coordinates[0];
+            longitude.push(longsite);
+            var sitepollen = row.properties.yr7750;
+            pollenCount.push(sitepollen)
+            latitude.push(latsite);
 
-      var heat = L.heatLayer(locations, { 
-       minOpacity: 0.3,
-       radius: 20,
-        blur:10,
-        maxZoom:5,
-        max:100,
-       gradient: {
-           0.1: 'purple',
-           0.2: 'cyan',
-           0.3: '#2b83ba',
-           0.4: 'green',
-           0.6: 'yellow',
-           0.8: 'orange',
-           0.9: '#d7191c',
-           1: 'red'
-       } 
-   });
-         
-    map.addLayer(heat);
+            sitedata.push({lat: latsite, lng: longsite, count: pollenCount})
+//            pollendata.push(sitedata)
+//
+        });
+console.log(sitedata)
+    // don't forget to include leaflet-heatmap.js
+    var testData = {
+      max: 100,
+      data: [sitedata]
+    };
 
+
+
+    var cfg = {
+      // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+      // if scaleRadius is false it will be the constant radius used in pixels
+      "radius": 2,
+      "maxOpacity": .8, 
+      // scales the radius based on map zoom
+      "scaleRadius": true, 
+      // if set to false the heatmap uses the global maximum for colorization
+      // if activated: uses the data maximum within the current map boundaries 
+      //   (there will always be a red spot with useLocalExtremas true)
+      "useLocalExtrema": true,
+      // which field name in your data represents the latitude - default "lat"
+      latField: latitude,
+      // which field name in your data represents the longitude - default "lng"
+      lngField: longitude,
+      // which field name in your data represents the data value - default "value"
+      valueField: pollenCount
+    };
+console.log(cfg)
+
+
+//    var heatmapLayer = new HeatmapOverlay(cfg);
+//
+//    var map = new L.Map('map-canvas', {
+//      center: new L.LatLng(25.6586, -80.3568),
+//      zoom: 4,
+//      layers: [heatmapLayer]
+//    });
+
+//    heatmapLayer.setData(testData);
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+////create heat map
+//function createHeatMap(pollen){
+//    
+//    var locations = pollen.features.map(function(row) {
+//      // the heatmap plugin wants an array of each location
+//      var location = row.geometry.coordinates.reverse();
+//      location.push(.5);
+//      return location; // [50.5, 30.5, 0.2], [lat, lng, intensity]
+//    });
+//
+//      var heat = L.heatLayer(locations, { 
+//       minOpacity: 0.3,
+//       radius: 20,
+//        blur:10,
+//        maxZoom:5,
+//        max:100,
+//       gradient: {
+//           0.1: 'purple',
+//           0.2: 'cyan',
+//           0.3: '#2b83ba',
+//           0.4: 'green',
+//           0.6: 'yellow',
+//           0.8: 'orange',
+//           0.9: '#d7191c',
+//           1: 'red'
+//       } 
+//   });
+//         
+//    map.addLayer(heat);
+//
+//};
 
 
 

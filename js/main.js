@@ -5,8 +5,8 @@ var map;
 function createMap(){
     //creates map & set center/zoom
     map = L.map('mapid', {
-        center: [50, -80],
-        zoom: 3.8,
+        center: [50, -100],
+        zoom: 3.3,
         maxZoom: 7,
         minZoom: 2.3
     });
