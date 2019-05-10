@@ -140,10 +140,12 @@ dropdownLayers["All Data"] =
 	}
 }).addTo(map); */
 
-function createOverlay(map, getData, data, attributes){ //getIce){
+function createOverlay(map, getData/*, data, attributes*/){ //getIce){
 
 	//Define overlay/popup content
-	var iceLayer = L.geoJSON(ice).addTo(map);
+	var iceLayer = 
+		L.geoJSON(ice)
+			.bindPopup('All ice sheets').addTo(map);
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
 	var yr7000 = L.geoJSON(ice7k).addTo(map);
@@ -170,7 +172,7 @@ function createOverlay(map, getData, data, attributes){ //getIce){
 	// };
 
 	var overlays = {
-		"Ice Sheets": iceLayer,
+		"All Ice Sheets": iceLayer,
 		"5000": yr5000, //ice test
 		"6000": yr6000,
 		"7000": yr7000,
@@ -182,7 +184,7 @@ function createOverlay(map, getData, data, attributes){ //getIce){
 		"12750": yr12750,
 		"13500": yr13500,
 		"14000": yr14000,
-    "Taxon": taxon_prop
+		//"Taxon": taxon_prop
 	};
 
 	L.control.layers(overlays,null,{collapsed:false}).addTo(map);
@@ -562,7 +564,7 @@ function getIce(map){
 			//create array
 			var iceAttributes = getIce(response);
 			//call function
-			 createOverlay(map, getIce);
+			 //createOverlay(map, getIce);
 		}
 	});
 };
