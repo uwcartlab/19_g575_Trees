@@ -142,25 +142,21 @@ function createOverlay(map, getData){ //getIce){
 	var none = L.geoJSON(none).addTo(map);
 	var iceLayer = 
 		L.geoJSON(ice)
-			.bindPopup('All Ice Sheets').addTo(map);
-	
+			.bindPopup('This layer shows all ice sheet data. Use the controls to the right to select a specfic timestamp.').addTo(map);
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
-	var yr7000 = L.geoJSON(ice7k)
-		.bindPopup('In China, rice and other crops are domesticated. The English Channel is formed.').addTo(map);
-	var yr8000 = L.geoJSON(ice8k)
-		.bindPopup('Between 8,000 and 7,000 BCE, Mesopotamian cultures began cultivating barley and wheat.').addTo(map);
+	var yr7000 = L.geoJSON(ice7k).addTo(map);
+	var yr8000 = L.geoJSON(ice8k).addTo(map);
 	var yr9000 = L.geoJSON(ice9k)
-		.bindPopup('~9,000 BCE marks the begining of the Holocene. The Last Glacial Maximum begins to retreat. Star Carr, a Mesolithic settlement, is founded in North Yorkshire, England.').addTo(map);
+		.bindPopup('~9,000 BCE marks the begining of the Holocene. The Last Glacial Maximum begins to retreat. <a href="http://www.starcarr.com/" target="blank">Star Carr</a>, a Mesolithic settlement, is founded in North Yorkshire, England.').addTo(map);
 	var yr10000 = L.geoJSON(ice10k).addTo(map);
 	var yr10250 = L.geoJSON(ice10250).addTo(map);
-	var yr11000 = L.geoJSON(ice11k)
-		.bindPopup().addTo(map);
+	var yr11000 = L.geoJSON(ice11k).addTo(map);
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
 	var yr14000 = 
 		L.geoJSON(ice14k)
-			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at Lascaux Cave in southern France.').addTo(map);
+			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at <a href="http://archeologie.culture.fr/lascaux/en" target="blank">Lascaux Cave</a> in southern France.').addTo(map);
 	var yr15000 = L.geoJSON(ice15k).addTo(map);
 	var yr16000 = L.geoJSON(ice16k).addTo(map);
 	var yr17000 = L.geoJSON(ice17k).addTo(map);
