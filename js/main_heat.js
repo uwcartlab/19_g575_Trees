@@ -4,23 +4,25 @@ var map;
 function createMap(heatmapLayer){
     //creates map & set center/zoom
     map = L.map('mapid', {
+<<<<<<< HEAD
         center: [50, -100],
         zoom: 3.3,
         minZoom:2.3,
         layer: heatmapLayer
+=======
+        center: [50, -80],
+        zoom: 3.8
+>>>>>>> b76fbb9715e61498f3e69f1507132de4cd8c9875
     });
 
 
     //add OSM base tilelayer w/attribution
-    var CartoDB_Positron = 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    	subdomains: 'abcd',
-    	maxZoom: 19
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/final_pollendata.geojson"));
+	promises.push($.getJSON("data/pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
@@ -42,12 +44,15 @@ function callback(data){
 
 //	var attributes = processData(response);
 //	createPropSymbols(response, map, attributes);
+<<<<<<< HEAD
 //	createSequenceControls(map, pollen);
+=======
+//	createSequenceControls(map, attributes);
+>>>>>>> b76fbb9715e61498f3e69f1507132de4cd8c9875
 //	createLegend(map,attributes);
 //	updateLegend(map, attributes[0]);
     createHeatMap(pollen);
 };
-
 
 //Puts map on webpage
 $(document).ready(createMap);
@@ -149,7 +154,7 @@ function createHeatMap(pollen){
        radius: 20,
         blur:10,
         maxZoom:5,
-        max:100,
+        max:50,
        gradient: {
            0.1: 'purple',
            0.2: 'cyan',
@@ -167,6 +172,7 @@ function createHeatMap(pollen){
 };
 
 
+<<<<<<< HEAD
 
 
 
@@ -259,6 +265,29 @@ function createHeatMap(pollen){
 //        };
 //    });
 //};
+=======
+//legend function??
+
+
+
+// update heat to new attribute values using updatePropSymbol???
+function updateHeatMap(map, attribute){
+    map.eachLayer(function(layer){
+        // If the feature exists
+        if (layer.feature){
+            //access feature properties
+            var props = layer.feature.properties;
+
+            //update each feature's radius based on new attribute values
+            var radius = calcPropRadius(props[attribute]);
+            layer.setRadius(radius);
+
+            // update legend functions
+//            updateLegend(map, attribute);
+        };
+    });
+};
+>>>>>>> b76fbb9715e61498f3e69f1507132de4cd8c9875
 
 
 
@@ -651,7 +680,7 @@ function processIce(getIce){
 // Import GeoJSON data
 function getData(map){
     //load the data
-    $.ajax("data/final_pollendata.geojson", {
+    $.ajax("data/pollendata.geojson", {
         dataType: "json",
         success: function(response){
 
