@@ -153,12 +153,7 @@ function createOverlay(map, getData){ //getIce){
 	var none = L.geoJSON(none).addTo(map);
 	var iceLayer =
 		L.geoJSON(ice)
-<<<<<<< HEAD
 			.bindPopup('This layer shows all ice sheet data. Use the controls to the right to select a specfic timestamp.').addTo(map);
-=======
-			.bindPopup('All Ice Sheets').addTo(map);
-
->>>>>>> 1f60dde556bf29959ac12fc35ca00d60c428730a
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
 	var yr7000 = L.geoJSON(ice7k).addTo(map);

@@ -16,6 +16,7 @@
 	text-align: justify;
 	line-height: 14px;
 	font-size: 0.8em;
+	padding: 20px
 }
 
 
@@ -101,7 +102,7 @@ body#panelLayers {
 	margin-left:200px;
 }
 
-a {
+/* a {
 	color:#1978cf;
 }
 a:hover {
@@ -181,4 +182,4 @@ pre {
 	font-size: 10px;
 	box-shadow: inset 2px 2px 4px #ccc;
 	border: 2px solid #1978cf;
-}
+} */
