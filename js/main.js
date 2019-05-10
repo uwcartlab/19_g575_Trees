@@ -410,8 +410,6 @@ function updatePropSymbols(map, attribute){
 function processData(data){
     //empty array to hold attributes
     var attributes = [];
-
-    //properties of the first feature in the dataset
 	
    //properties of the first feature in the dataset
     var properties = data.features[0].properties;
