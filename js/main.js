@@ -129,18 +129,27 @@ dropdownLayers["All Data"] =
 function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
-	var iceLayer = L.geoJSON(ice).addTo(map);
+	var iceLayer = 
+		L.geoJSON(ice)
+			.bindPopup('All ice sheets').addTo(map);
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
-	var yr7000 = L.geoJSON(ice7k).addTo(map);
-	var yr8000 = L.geoJSON(ice8k).addTo(map);
-	var yr9000 = L.geoJSON(ice9k).addTo(map);
+	var yr7000 = L.geoJSON(ice7k)
+		.bindPopup('In China, rice and other crops are domesticated. The English Channel is formed.').addTo(map);
+	var yr8000 = L.geoJSON(ice8k)
+		.bindPopup('Between 8,000 and 7,000 BCE, Mesopotamian cultures began cultivating barley and wheat.').addTo(map);
+	var yr9000 = L.geoJSON(ice9k)
+		.bindPopup('~9,000 BCE marks the begining of the Holocene. The Last Glacial Maximum begins to retreat. Star Carr, a Mesolithic settlement, is founded in North Yorkshire, England.').addTo(map);
 	var yr10000 = L.geoJSON(ice10k).addTo(map);
 	var yr10250 = L.geoJSON(ice10250).addTo(map);
-	var yr11000 = L.geoJSON(ice11k).addTo(map);
+	var yr11000 = L.geoJSON(ice11k)
+		.bindPopup().addTo(map);
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
-	var yr14000 = L.geoJSON(ice14k).addTo(map);
+	var yr14000 = 
+		L.geoJSON(ice14k)
+			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at Lascaux Cave in southern France.').addTo(map);
+	
 	console.log(ice.features[0]);
 
 	// var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -174,7 +183,7 @@ function createOverlay(map, getData){ //getIce){
 		"14000": yr14000
 	};
 
-	L.control.layers(/*baseLayers,*/overlays).addTo(map);
+	L.control.layers(/*baseLayers,*/overlays, null,{collapsed:false}).addTo(map);
 };
 
 // Function to create popups
