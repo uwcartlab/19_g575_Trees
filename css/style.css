@@ -5,6 +5,12 @@
 				 width: 79%;/*69%;*/
 				 display: inline-block;
 }
+#welcome {
+	font-family: 'Rubik', sans-serif;
+	text-align: justify;
+	padding: 20px;
+}
+
 
 .iceLayer {
 	opacity: 50%;
@@ -18,6 +24,7 @@
     line-height: 45px;
     text-align: left;
     border: solid gray 1px;
+	box-shadow: 5px 8px 8px #888888;
 }
 
 /* Sets style for title container*/
@@ -52,6 +59,7 @@
 	text-align: center;
 	border:  solid black 1px;
 	padding: 5px;
+	font-family: 'Rubik', sans-serif;
 }
 
 /* Sets style for sequence control container*/
