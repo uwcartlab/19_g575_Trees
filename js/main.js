@@ -79,7 +79,7 @@ function callback(data){
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
-	createOverlay(map, getData)//iceLayer)
+	createOverlay(map, getData, data, attributes)//iceLayer)
 	//changeExpression(src)
 	//loadScript(src)
 
@@ -90,23 +90,23 @@ function callback(data){
 	updateLegend(map, attributes[0]);
   console.log(taxa_prop)
 
-  createLayerControl(response, map, attributes);
+  // createLayerControl(response, map, attributes);
 };
 
 //Puts map on webpage
 $(document).ready(createMap);
 
-function createLayerControl(response, map, attributes){
-  var groupedOverlays = {
-    "Tree and Plant Taxa": {
-      "Spruce": picea,
-      "Pine": pinus
-    },
-    "Glacial Extent": ice
-
-  }
-L.control.groupedLayers(groupedOverlays).addTo(map);
-};
+// function createLayerControl(response, map, attributes){
+//   var groupedOverlays = {
+//     "Tree and Plant Taxa": {
+//       "Spruce": picea,
+//       "Pine": pinus
+//     },
+//     "Glacial Extent": ice
+//
+//   }
+// L.control.groupedLayers(groupedOverlays).addTo(map);
+// };
 /* var dropdownLayers = {};
 dropdownLayers["All Data"] =
 	{ name: "All Data",
@@ -161,13 +161,13 @@ function createOverlay(map, getData, data, attributes){ //getIce){
           }});
 	console.log(ice.features[0]);
 
-	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
-	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
+	var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+		bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
-	// var baseLayers = {
-	// 	"OSM Mapnik": osmMap,
-	// 	"Greyscale": bwMap
-	// };
+	var baseLayers = {
+		"Birch": alnus,
+		"Spruce": picea
+	};
 
 	var overlays = {
 		"Ice Sheets": iceLayer,
@@ -181,11 +181,9 @@ function createOverlay(map, getData, data, attributes){ //getIce){
 		"11000": yr11000,
 		"12750": yr12750,
 		"13500": yr13500,
-		"14000": yr14000,
-    "Taxon": taxon_prop
+		"14000": yr14000
 	};
-
-	L.control.layers(overlays,null,{collapsed:false}).addTo(map);
+	L.control.groupedLayers(overlays,null,{collapsed:false}).addTo(map);
 };
 
 // Function to create popups
