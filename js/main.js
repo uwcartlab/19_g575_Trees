@@ -21,7 +21,7 @@ function createMap(){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/final_pollendata.geojson"));
+	promises.push($.getJSON("data/pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	promises.push($.getJSON("data/ice5000.geojson")); //ice test
 	promises.push($.getJSON("data/ice6000.geojson"));
