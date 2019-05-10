@@ -34,6 +34,10 @@ function createMap(heatmapLayer){
 	promises.push($.getJSON("data/ice13500.geojson"));
 	promises.push($.getJSON("data/ice14000.geojson"));
 	promises.push($.getJSON("data/none.geojson"));
+	promises.push($.getJSON("data/ice15000.geojson"));
+	promises.push($.getJSON("data/ice16000.geojson"));
+	promises.push($.getJSON("data/ice17000.geojson"));
+	promises.push($.getJSON("data/ice18000.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
     getData(map);
@@ -57,6 +61,10 @@ function callback(data){
 	ice13500 = data[11];
 	ice14k = data[12];
 	none = data [13];
+	ice15k = data[14];
+	ice16k = data[15];
+	ice17k = data[16];
+	ice18k = data[17];
 
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
@@ -163,7 +171,10 @@ function createOverlay(map, getData){ //getIce){
 	var yr14000 = 
 		L.geoJSON(ice14k)
 			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at Lascaux Cave in southern France.').addTo(map);
-	
+	var yr15000 = L.geoJSON(ice15k).addTo(map);
+	var yr16000 = L.geoJSON(ice16k).addTo(map);
+	var yr17000 = L.geoJSON(ice17k).addTo(map);
+	var yr18000 = L.geoJSON(ice18k).addTo(map);
 	console.log(ice.features[0]);
 
 /* 	 var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -195,7 +206,11 @@ function createOverlay(map, getData){ //getIce){
 		"11000": yr11000,
 		"12750": yr12750,
 		"13500": yr13500,
-		"14000": yr14000
+		"14000": yr14000,
+		"15000": yr15000,
+		"16000": yr16000,
+		"17000": yr17000,
+		"18000": yr18000
 	};
 
 	L.control.layers(/* baseLayers, */overlays,null,{collapsed:false}).addTo(map);
