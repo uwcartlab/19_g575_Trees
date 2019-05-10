@@ -69,7 +69,7 @@ function callback(data){
 	ice12750 = data[10];
 	ice13500 = data[11];
 	ice14k = data[12];
-	
+
 	//TAXA Data
 	alnus = data[13];
 	ambrosia = data[14];
@@ -79,17 +79,17 @@ function callback(data){
 	poaceae = data[18];
 	quercus = data[19];
 	tsuga = data[20];
-	
+
 	none = data[21];
 	ice15k = data[22];
 	ice16k = data[23];
 	ice17k = data[24];
 	ice18k = data[25];
-	
+
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
-	createOverlay(map, getData)//iceLayer)
+	createOverlay(map, getData, data, attributes)//iceLayer)
 	//changeExpression(src)
 	//loadScript(src)
 
@@ -103,6 +103,17 @@ function callback(data){
 //Puts map on webpage
 $(document).ready(createMap);
 
+// function createLayerControl(response, map, attributes){
+//   var groupedOverlays = {
+//     "Tree and Plant Taxa": {
+//       "Spruce": picea,
+//       "Pine": pinus
+//     },
+//     "Glacial Extent": ice
+//
+//   }
+// L.control.groupedLayers(groupedOverlays).addTo(map);
+// };
 /* var dropdownLayers = {};
 dropdownLayers["All Data"] =
 	{ name: "All Data",
@@ -140,9 +151,14 @@ function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
 	var none = L.geoJSON(none).addTo(map);
-	var iceLayer = 
+	var iceLayer =
 		L.geoJSON(ice)
+<<<<<<< HEAD
 			.bindPopup('This layer shows all ice sheet data. Use the controls to the right to select a specfic timestamp.').addTo(map);
+=======
+			.bindPopup('All Ice Sheets').addTo(map);
+
+>>>>>>> 1f60dde556bf29959ac12fc35ca00d60c428730a
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
 	var yr7000 = L.geoJSON(ice7k).addTo(map);
@@ -154,7 +170,7 @@ function createOverlay(map, getData){ //getIce){
 	var yr11000 = L.geoJSON(ice11k).addTo(map);
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
-	var yr14000 = 
+	var yr14000 =
 		L.geoJSON(ice14k)
 			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at <a href="http://archeologie.culture.fr/lascaux/en" target="blank">Lascaux Cave</a> in southern France.').addTo(map);
 	var yr15000 = L.geoJSON(ice15k).addTo(map);
@@ -174,10 +190,10 @@ function createOverlay(map, getData){ //getIce){
 	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
 	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
-	// var baseLayers = {
-	// 	"OSM Mapnik": osmMap,
-	// 	"Greyscale": bwMap
-	// };
+	var baseLayers = {
+		"Birch": alnus,
+		"Spruce": picea
+	};
 
 	var overlays = {
 		"None": none,
@@ -341,15 +357,15 @@ function createSequenceControls(map, attributes){
 		options: {
 			position: 'bottomleft'
 		},
-		
+
 		onAdd: function (map) {
 			var container = L.DomUtil.create('div', 'sequence-control-container');
-			
+
 			$(container).append('<input class="range-slider" type="range">');
 			$(container).append('<button class="skip" id="reverse" title="Reverse">Reverse</button>');
 			$(container).append('<button class="skip" id="forward" title="Forward">Skip</button>');
 
-			
+
 			L.DomEvent.disableClickPropagation(container);
 			return container;
 		}
