@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--sets window specifications and title -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Ice Age Tree Explorer</title>
+
+		<!--external stylesheet links-->
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="lib/leaflet/leaflet.css">
+		<link rel="stylesheet" href="lib/leaflet-panel-layers/src/leaflet-panel-layers.css">
+				<link rel="stylesheet" href="lib/leaflet-panel-layers/examples/style.css">
+	</head>
+	<body>
+		<!--initial page content-->
+		<div id="mapid"></div>
+		<div id="panelLayers"></div>
+	  <div id="panel">
+			<h4>Ice Sheets</h4>
+			<div id="iceOverlay">
+			<p>add overlay controls here</p>
+			</div>
+			<h4>Select a taxa:</h4>
+			<div id="menu">
+				<select id="selector">
+					<option value="all">All Data</option>
+					<option value="spruce">Spruce</option>
+					<option value="oak">Oak</option>
+					<option value="hemlock">Eastern Hemlock</option>
+				</select>
+			</div>
+			<h4>Sequence</h4>
+			<div id="sequence-control-container">
+			</div>
+		</div>
+
+		<!--external script links-->
+		<script type="text/javascript" src="lib/jquery-3.4.0.js"></script>
+		<script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
+		<script type="text/javascript" src="lib/leaflet/leaflet-heat.js"></script>
+		<script type="text/javascript" src="lib/leaflet-panel-layers/src/leaflet-panel-layers.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <!-- <script type="text/javascript" src="js/main_heat.js"></script> -->
+
+	</body>
+</html>

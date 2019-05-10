@@ -5,17 +5,21 @@ function createMap(){
     //creates map & set center/zoom
     map = L.map('mapid', {
         center: [50, -80],
-        zoom: 3.8
+        zoom: 3.8,
+        minZoom:2.3
     });
 
 
     //add OSM base tilelayer w/attribution
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    var CartoDB_Positron = 
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    	subdomains: 'abcd',
+    	maxZoom: 19
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/pollendata.geojson"));
+	promises.push($.getJSON("data/final_pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
@@ -37,11 +41,12 @@ function callback(data){
 
 //	var attributes = processData(response);
 //	createPropSymbols(response, map, attributes);
-//	createSequenceControls(map, attributes);
+	createSequenceControls(map, pollen);
 //	createLegend(map,attributes);
 //	updateLegend(map, attributes[0]);
     createHeatMap(pollen);
 };
+
 
 //Puts map on webpage
 $(document).ready(createMap);
@@ -65,7 +70,7 @@ function createHeatMap(pollen){
        radius: 20,
         blur:10,
         maxZoom:5,
-        max:50,
+        max:100,
        gradient: {
            0.1: 'purple',
            0.2: 'cyan',
@@ -83,12 +88,69 @@ function createHeatMap(pollen){
 };
 
 
-//legend function??
+
+////sequence controll
+//function createSequenceControls(map, pollen){
+//  
+//  //create range input element (slider)
+//  $('#sequence-control-container').append('<input class="range-slider" type="range">');
+//
+//  // Create skip buttons
+//  $('#sequence-control-container').append('<button class="skip" id="reverse">Reverse</button>');
+//  $('#sequence-control-container').append('<button class="skip" id="forward">Skip</button>');
+//
+//  //set slider attributes
+//  $('.range-slider').attr({
+//      max: 29,
+//      min: 0,
+//      value: 0,
+//      step: 1
+//    });
+//    // Adds forward/backward button images
+//    $('#reverse').html('<img src="img/back.png">');
+//    $('#forward').html('<img src="img/next.png">');
+//
+//    //Creates click listener for buttons
+//    $('.skip').click(function(){
+//        //get the old index value
+//        var index = $('.range-slider').val();
+//
+//        //Step 6: increment or decrement depending on button clicked
+//        if ($(this).attr('id') == 'forward'){
+//            index++;
+//            //Step 7: if past the last attribute, wrap around to first attribute
+//            index = index > 41 ? 0 : index;
+//        } else if ($(this).attr('id') == 'reverse'){
+//            index--;
+//            //Step 7: if past the first attribute, wrap around to last attribute
+//            index = index < 0 ? 41 : index;
+//        };
+//
+//      //update slider
+//      $('.range-slider').val(index);
+//
+//      //pass new attribute to update symbols
+//      updateHeatMap(map, attributes[index]);
+//    });
+//
+//  //input listener for slider
+//  $('.range-slider').on('input', function(){
+//      //get the new index value
+//      var index = $(this).val();
+//      //pass new attribute to update symbols
+//      updateHeatMap(map, pollen[index]);
+//  });
+//
+//};
+//
+//
+////legend function??
+
 
 
 
 // update heat to new attribute values using updatePropSymbol???
-function updateHeatMap(map, attribute){
+function updateHeatMap(map, pollen){
     map.eachLayer(function(layer){
         // If the feature exists
         if (layer.feature){
@@ -96,11 +158,11 @@ function updateHeatMap(map, attribute){
             var props = layer.feature.properties;
 
             //update each feature's radius based on new attribute values
-            var radius = calcPropRadius(props[attribute]);
+            var radius = locations(props[attribute]);
             layer.setRadius(radius);
 
             // update legend functions
-//            updateLegend(map, attribute);
+//            updateHeatLegend(map, attribute);
         };
     });
 };
@@ -496,7 +558,7 @@ function processIce(getIce){
 // Import GeoJSON data
 function getData(map){
     //load the data
-    $.ajax("data/pollendata.geojson", {
+    $.ajax("data/final_pollendata.geojson", {
         dataType: "json",
         success: function(response){
 
