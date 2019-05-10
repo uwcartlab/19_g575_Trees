@@ -22,6 +22,18 @@ function createMap(heatmapLayer){
 	promises = [];
 	promises.push($.getJSON("data/final_pollendata.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
+	promises.push($.getJSON("data/ice5000.geojson")); //ice test
+	promises.push($.getJSON("data/ice6000.geojson"));
+	promises.push($.getJSON("data/ice7000.geojson"));
+	promises.push($.getJSON("data/ice8000.geojson"));
+	promises.push($.getJSON("data/ice9000.geojson"));
+	promises.push($.getJSON("data/ice10000.geojson"));
+	promises.push($.getJSON("data/ice10250.geojson"));
+	promises.push($.getJSON("data/ice11000.geojson"));
+	promises.push($.getJSON("data/ice12750.geojson"));
+	promises.push($.getJSON("data/ice13500.geojson"));
+	promises.push($.getJSON("data/ice14000.geojson"));
+	promises.push($.getJSON("data/none.geojson"));
 	Promise.all(promises).then(callback);
     //call getData function
     getData(map);
@@ -33,11 +45,23 @@ function createMap(heatmapLayer){
 function callback(data){
 	pollen = data[0];
 	ice = data[1];
+	ice5k = data[2];
+	ice6k = data[3];
+	ice7k = data[4];
+	ice8k = data[5];
+	ice9k = data[6];
+	ice10k = data[7];
+	ice10250 = data[8];
+	ice11k = data[9];
+	ice12750 = data[10];
+	ice13500 = data[11];
+	ice14k = data[12];
+	none = data [13];
 
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 //	var icelayer = L.geoJSON(ice).addTo(map);
-//	createOverlay(map, icelayer)
+	createOverlay(map, getData)
 
 
 //	var attributes = processData(response);
@@ -115,24 +139,67 @@ $(document).ready(createMap);
 ////    heatmapLayer.setData(testData);
 //};
 
+function createOverlay(map, getData){ //getIce){
 
+	//Define overlay/popup content
+	var iceLayer = 
+		L.geoJSON(ice)
+			.bindPopup('All ice sheets').addTo(map);
+	var none = L.geoJSON(none).addTo(map);
+	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
+	var yr6000 = L.geoJSON(ice6k).addTo(map);
+	var yr7000 = L.geoJSON(ice7k)
+		.bindPopup('In China, rice and other crops are domesticated. The English Channel is formed.').addTo(map);
+	var yr8000 = L.geoJSON(ice8k)
+		.bindPopup('Between 8,000 and 7,000 BCE, Mesopotamian cultures began cultivating barley and wheat.').addTo(map);
+	var yr9000 = L.geoJSON(ice9k)
+		.bindPopup('~9,000 BCE marks the begining of the Holocene. The Last Glacial Maximum begins to retreat. Star Carr, a Mesolithic settlement, is founded in North Yorkshire, England.').addTo(map);
+	var yr10000 = L.geoJSON(ice10k).addTo(map);
+	var yr10250 = L.geoJSON(ice10250).addTo(map);
+	var yr11000 = L.geoJSON(ice11k)
+		.bindPopup().addTo(map);
+	var yr12750 = L.geoJSON(ice12750).addTo(map);
+	var yr13500 = L.geoJSON(ice13500).addTo(map);
+	var yr14000 = 
+		L.geoJSON(ice14k)
+			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at Lascaux Cave in southern France.').addTo(map);
+	
+	console.log(ice.features[0]);
 
+/* 	 var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+	 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
+  
+	 var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		osmAttrib = '&copy; ' + osmLink + ' Contributors',
+	 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
+	 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
+  
+	 var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+	 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
+	 var baseLayers = {
+	 	"OSM Mapnik": osmMap,
+	 	"Greyscale": bwMap
+	}; */
 
+	var overlays = {
+		"None": none,
+		"All Ice Sheets": iceLayer,
+		"5000": yr5000, //ice test
+		"6000": yr6000,
+		"7000": yr7000,
+		"8000": yr8000,
+		"9000": yr9000,
+		"10000": yr10000,
+		"10250": yr10250,
+		"11000": yr11000,
+		"12750": yr12750,
+		"13500": yr13500,
+		"14000": yr14000
+	};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	L.control.layers(/* baseLayers, */overlays,null,{collapsed:false}).addTo(map);
+};
 
 //create heat map
 function createHeatMap(pollen){
@@ -213,19 +280,6 @@ function createLegend(map, attributes, attribute){
     // calls update legend function
     //updateLegend(map, attributes[0]);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

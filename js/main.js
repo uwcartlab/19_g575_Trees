@@ -76,6 +76,8 @@ function callback(data){
 	quercus = data[19];
 	tsuga = data[20];
 	
+	none = data[21];
+	
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
@@ -129,9 +131,11 @@ dropdownLayers["All Data"] =
 function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
+	var none = L.geoJSON(none).addTo(map);
 	var iceLayer = 
 		L.geoJSON(ice)
-			.bindPopup('All ice sheets').addTo(map);
+			.bindPopup('All Ice Sheets').addTo(map);
+	
 	var yr5000 = L.geoJSON(ice5k).addTo(map); //ice test
 	var yr6000 = L.geoJSON(ice6k).addTo(map);
 	var yr7000 = L.geoJSON(ice7k)
@@ -169,7 +173,8 @@ function createOverlay(map, getData){ //getIce){
 	// };
 
 	var overlays = {
-		"Ice Sheets": iceLayer,
+		"None": none,
+		"All Ice Sheets": iceLayer,
 		"5000": yr5000, //ice test
 		"6000": yr6000,
 		"7000": yr7000,
