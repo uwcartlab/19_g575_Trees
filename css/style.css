@@ -7,8 +7,9 @@
 	display: inline-block;
 }
 
-.intro {
+#intro {
 	text-align: justify;
+	padding: 10px;
 }
 
 .iceLayer {
@@ -40,8 +41,8 @@
 }
 #forward {
     float: right;
-		padding: 3px;
-		offset: 5px;
+	/*padding: 3px;
+	offset: 5px;*/
 }
 #reverse {
     float: left;
