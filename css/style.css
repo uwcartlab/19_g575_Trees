@@ -1,9 +1,15 @@
 /* Stylesheet by Anna E. George, 2019 */
 
 /* defines map height, width, and display type*/
-#mapid { height: 712px;
-				 width: 69%;
-				 display: inline-block;
+#mapid { 
+	height: 712px; /*had been 700px*/
+	width: 79%; /*had been 69%*/
+	display: inline-block;
+}
+
+#intro {
+	text-align: justify;
+	padding: 10px;
 }
 
 .iceLayer {
@@ -35,16 +41,16 @@
 }
 #forward {
     float: right;
-		padding: 3px;
-		offset: 5px;
+	/*padding: 3px;
+	offset: 5px;*/
 }
 #reverse {
     float: left;
 }
 
 #panel {
-	height: 700px;
-	width: 27%;
+	height: 700px; 
+	width: 20%; /*had been 27%*/
 	display: inline-block;
 	float: left;
 	color: black;

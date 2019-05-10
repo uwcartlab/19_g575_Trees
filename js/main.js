@@ -79,7 +79,7 @@ function callback(data){
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
-	createOverlay(map, getData, data, attributes)//iceLayer)
+	createOverlay(map, getData)//iceLayer)
 	//changeExpression(src)
 	//loadScript(src)
 
@@ -158,8 +158,8 @@ function createOverlay(map, getData, data, attributes){ //getIce){
   // var taxon_prop = L.geoJson(data, {
   //         pointToLayer: function(feature, latlng){
   //             return pointToLayer(feature, latlng, attributes);
-          // }.addTo(map)
-        // };
+  //         }.addTo(map);
+	console.log(ice.features[0]);
 
 	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
 	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
@@ -181,8 +181,8 @@ function createOverlay(map, getData, data, attributes){ //getIce){
 		"11000": yr11000,
 		"12750": yr12750,
 		"13500": yr13500,
-		"14000": yr14000
-    // "Taxon": taxon_prop
+		"14000": yr14000,
+    "Taxon": taxon_prop
 	};
 
 	L.control.layers(overlays,null,{collapsed:false}).addTo(map);

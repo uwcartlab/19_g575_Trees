@@ -9,14 +9,19 @@
 		<!--external stylesheet links-->
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="lib/leaflet/leaflet.css">
-		<link rel="stylesheet" href="lib/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.min.css">
-
 
 	</head>
 	<body>
 		<!--initial page content-->
 		<div id="mapid"></div>
 	  <div id="panel">
+			<h4>Welcome!</h4>
+			<div id="intro">
+			<p>Welcome to the Ice Age Tree Explorer! This dynamic mapping tool
+			will allow you to explore a datasets of tree pollen and icesheets. Using the controls
+			below, choose a data expression. Then, using the controls on the map, sequence through time,
+			overlay ice sheets, and retrieve site-specific data.</p>
+			</div>
 			<h4>Ice Sheets</h4>
 			<div id="iceOverlay">
 			<p>add overlay controls here</p>
@@ -43,13 +48,16 @@
 		<!--external script links-->
 		<script type="text/javascript" src="lib/jquery-3.4.0.js"></script>
 		<script type="text/javascript" src="lib/leaflet/leaflet.js"></script>
-		<script type="text/javascript" src="lib/leaflet-groupedlayercontrol/leaflet-groupedlayercontrol.min.js"></script>
 		<script type="text/javascript" src="lib/leaflet/leaflet-heat.js"></script>
-÷		<script type="text/javascript" src="js/main_heat.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
+		<!--<script type="text/javascript" src="js/main.js"></script>-->
+		<script type="text/javascript" src="js/main_heat.js"></script>
+
+
+
+<!--     <script type="text/javascript" src="js/main.js"></script> -->
 		<!-- <script type="text/javascript" src="lib/leaflet/Gruntfile.js"></script> -->
 	</body>
-<script type="text/javascript">
+  <script type="text/javascript">
 	let changeExpression = function(type) {
 		let elem = document.createElement("script");
 	if (type === 'heat') {
@@ -59,7 +67,6 @@
 	}
 	map.off();
 	map.remove();
-
 	document.body.appendChild(elem);
 	}
 </script>
