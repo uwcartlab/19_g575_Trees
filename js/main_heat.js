@@ -7,12 +7,13 @@ function createMap(heatmapLayer){
         center: [50, -100],
         zoom: 3.3,
         minZoom:2.3,
+        maxZoom: 6,
         layer: heatmapLayer
     });
 
 
     //add OSM base tilelayer w/attribution
-    var CartoDB_Positron = 
+    var CartoDB_Positron =
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     	subdomains: 'abcd',
@@ -20,7 +21,7 @@ function createMap(heatmapLayer){
     }).addTo(map);
 
 	promises = [];
-	promises.push($.getJSON("data/final_pollendata.geojson"));
+	promises.push($.getJSON("data/quercus.geojson"));
 	promises.push($.getJSON("data/icesheets.geojson"));
 	promises.push($.getJSON("data/ice5000.geojson")); //ice test
 	promises.push($.getJSON("data/ice6000.geojson"));
@@ -91,7 +92,7 @@ $(document).ready(createMap);
 //    var longitude = []
 //    var pollenCount = []
 //    var sitedata = []
-//    
+//
 //    //for(var i=0; i<6; i++){
 //        pollen.features.map(function(row) {
 //              // the heatmap plugin wants an array of each location
@@ -119,11 +120,11 @@ $(document).ready(createMap);
 //      // radius should be small ONLY if scaleRadius is true (or small radius is intended)
 //      // if scaleRadius is false it will be the constant radius used in pixels
 //      "radius": 2,
-//      "maxOpacity": .8, 
+//      "maxOpacity": .8,
 //      // scales the radius based on map zoom
-//      "scaleRadius": true, 
+//      "scaleRadius": true,
 //      // if set to false the heatmap uses the global maximum for colorization
-//      // if activated: uses the data maximum within the current map boundaries 
+//      // if activated: uses the data maximum within the current map boundaries
 //      //   (there will always be a red spot with useLocalExtremas true)
 //      "useLocalExtrema": true,
 //      // which field name in your data represents the latitude - default "lat"
@@ -150,7 +151,7 @@ $(document).ready(createMap);
 function createOverlay(map, getData){ //getIce){
 
 	//Define overlay/popup content
-	var iceLayer = 
+	var iceLayer =
 		L.geoJSON(ice)
 			.bindPopup('All ice sheets').addTo(map);
 	var none = L.geoJSON(none).addTo(map);
@@ -168,7 +169,7 @@ function createOverlay(map, getData){ //getIce){
 		.bindPopup().addTo(map);
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
-	var yr14000 = 
+	var yr14000 =
 		L.geoJSON(ice14k)
 			.bindPopup('These ice sheets date to 14,000 BCE., the same time period as when the cave paintings were done at Lascaux Cave in southern France.').addTo(map);
 	var yr15000 = L.geoJSON(ice15k).addTo(map);
@@ -179,12 +180,12 @@ function createOverlay(map, getData){ //getIce){
 
 /* 	 var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
 	 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
-  
+
 	 var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 		osmAttrib = '&copy; ' + osmLink + ' Contributors',
 	 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
 	 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
-  
+
 	 var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
 	 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
@@ -218,7 +219,7 @@ function createOverlay(map, getData){ //getIce){
 
 //create heat map
 function createHeatMap(pollen){
-    
+
     var locations = pollen.features.map(function(row) {
       // the heatmap plugin wants an array of each location
       var location = row.geometry.coordinates.reverse();
@@ -226,7 +227,7 @@ function createHeatMap(pollen){
       return location; // [50.5, 30.5, 0.2], [lat, lng, intensity]
     });
 
-      var heat = L.heatLayer(locations, { 
+      var heat = L.heatLayer(locations, {
        minOpacity: 0.3,
        radius: 20,
         blur:10,
@@ -241,9 +242,9 @@ function createHeatMap(pollen){
            0.8: 'orange',
            0.9: '#d7191c',
            1: 'red'
-       } 
+       }
    });
-         
+
     map.addLayer(heat);
 
 };
@@ -300,7 +301,7 @@ function createLegend(map, attributes, attribute){
 
 ////sequence controll
 //function createSequenceControls(map, pollen){
-//  
+//
 //  //create range input element (slider)
 //  $('#sequence-control-container').append('<input class="range-slider" type="range">');
 //
