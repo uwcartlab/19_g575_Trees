@@ -43,7 +43,7 @@ function callback(data){
 //	var attributes = processData(response);
 //	createPropSymbols(response, map, attributes);
 //	createSequenceControls(map, pollen);
-//	createLegend(map,attributes);
+	createLegend(map);
 //	updateLegend(map, attributes[0]);
     createHeatMap(pollen);
 };
@@ -166,6 +166,53 @@ function createHeatMap(pollen){
 
 };
 
+// function to create the legend
+function createLegend(map, attributes, attribute){
+    // Creates legend control variable
+    var LegendControl = L.Control.extend({
+        options: {
+            position: 'bottomright' // sets position on screen
+        },
+        onAdd: function (map) {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
+
+            //add temporal legend div to container
+            $(container).append('<div id="temporal-legend">');
+
+            //Step 1: start attribute legend svg string
+            var svg = '<svg id="attribute-legend" width="160px" height="15px">';
+			//var legendImg = "img/heat-scale.png"
+/*             //variable for circle names and positions
+            var circles = {
+              max: 20,
+              mean: 40,
+              min: 60
+          };
+
+            //loop to add each circle and text to svg string
+            for (var circle in circles){
+                //circle string
+                svg += '<circle class="legend-circle" id="' + circle + '" fill="#228B22" fill-opacity="0.8" stroke="#000000" cx="30"/>';
+
+                //text string
+                svg += '<text id="' + circle + '-text" x="65" y="' + circles[circle] + '"></text>';
+            };
+ */
+            //close svg string
+            svg += "</svg>";
+
+            //add attribute legend svg to container
+            $(container).append('<img id="theLegend" src="img/heat-scale1.png"/>');
+            // return container as object
+            return container;
+        }
+    });
+    // adds to map
+    map.addControl(new LegendControl());
+    // calls update legend function
+    //updateLegend(map, attributes[0]);
+};
 
 
 
