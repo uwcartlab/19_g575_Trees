@@ -47,7 +47,7 @@ function createMap(){
     getData(map);
 	//call navPanel function
 //navPanel();
-	createOverlay(map, getData);
+	// createOverlay(map, getData);
 };
 
 function callback(data){
@@ -79,7 +79,7 @@ function callback(data){
 	//Move callbacks from AJAX HERE!
 	//to avoid asynchronous problems?
 	//var icelayer = L.geoJSON(ice).addTo(map);
-	//createOverlay(map, getData)//iceLayer)
+	createOverlay(map, getData, data, attributes)//iceLayer)
 	//changeExpression(src)
 	//loadScript(src)
 
@@ -90,7 +90,7 @@ function callback(data){
 	updateLegend(map, attributes[0]);
   console.log(taxa_prop)
 
-  // createLayerControl(response, map, attributes);
+  createLayerControl(response, map, attributes);
 };
 
 //Puts map on webpage
@@ -140,7 +140,7 @@ dropdownLayers["All Data"] =
 	}
 }).addTo(map); */
 
-function createOverlay(map, getData, data, map, attributes){ //getIce){
+function createOverlay(map, getData, data, attributes){ //getIce){
 
 	//Define overlay/popup content
 	var iceLayer = L.geoJSON(ice).addTo(map);
@@ -155,16 +155,12 @@ function createOverlay(map, getData, data, map, attributes){ //getIce){
 	var yr12750 = L.geoJSON(ice12750).addTo(map);
 	var yr13500 = L.geoJSON(ice13500).addTo(map);
 	var yr14000 = L.geoJSON(ice14k).addTo(map);
-	console.log(ice.features[0]);
+  // var taxon_prop = L.geoJson(data, {
+  //         pointToLayer: function(feature, latlng){
+  //             return pointToLayer(feature, latlng, attributes);
+          // }.addTo(map)
+        // };
 
-	// var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
-	// 	bwLink = '<a href="http://thunderforest.com/">OSMBlackAndWhite</a>';
-  //
-	// var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	// 	osmAttrib = '&copy; ' + osmLink + ' Contributors',
-	// 	bwUrl = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
-	// 	bwAttrib = '&copy; '+osmLink+' Contributors & '+bwLink;
-  //
 	// var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
 	// 	bwMap = L.tileLayer(bwUrl, {attribution: bwAttrib});
 
@@ -172,7 +168,7 @@ function createOverlay(map, getData, data, map, attributes){ //getIce){
 	// 	"OSM Mapnik": osmMap,
 	// 	"Greyscale": bwMap
 	// };
-//
+
 	var overlays = {
 		"Ice Sheets": iceLayer,
 		"5000": yr5000, //ice test
@@ -185,8 +181,8 @@ function createOverlay(map, getData, data, map, attributes){ //getIce){
 		"11000": yr11000,
 		"12750": yr12750,
 		"13500": yr13500,
-		"14000": yr14000,
-    "Taxon": createPropSymbols(data, map, attributes)
+		"14000": yr14000
+    // "Taxon": taxon_prop
 	};
 
 	L.control.layers(overlays,null,{collapsed:false}).addTo(map);
@@ -535,7 +531,7 @@ function updateLegend(map, attribute){
       $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + "%");
 	};
 };
-};
+
 
 /* function changeExpression(src){
     var heat = document.createElement("script");
@@ -566,7 +562,7 @@ function getIce(map){
 			//create array
 			var iceAttributes = getIce(response);
 			//call function
-			// createOverlay(map, getIce);
+			 createOverlay(map, getIce);
 		}
 	});
 };
